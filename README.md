@@ -1,4 +1,4 @@
-#Connect 4
+# Connect 4
 
 A basic implementation of Connect 4 built on React/Redux.
 
