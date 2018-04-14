@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "outDir": "./public/",
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "target": "es6",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": false,
+    "baseUrl": ".",
+    "paths": {
+      "redux": ["node_modules/redux"]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "types": [
+    "typePatches"
+  ],
+  "include": [
+    "./src/"
+  ]
+}

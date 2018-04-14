@@ -1,0 +1,26 @@
+{
+  "presets": [
+    ["env", {
+      "targets": { "node": 8 },
+      "useBuiltIns": true
+    }],
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    "add-module-exports",
+    "dynamic-import-webpack",
+    ["import", { "libraryName": "antd", "style": "css" }]
+  ],
+  "env": {
+    "production": {
+      "plugins": ["babel-plugin-dev-expression"]
+    },
+    "development": {
+      "plugins": [
+        "transform-class-properties",
+        "transform-es2015-classes"
+      ]
+    }
+  }
+}
