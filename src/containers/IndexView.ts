@@ -7,7 +7,7 @@ import {
     getGridStatusSelector, getTransposedGridSelector, isGameInProgressSelector,
     nextPlayerSelector
 } from "../selectors/grid";
-import {beginNewGameThunk} from "../thunks/game";
+import {beginNewGameThunk, resetScoreThunk} from "../thunks/game";
 import {getNumGamesWonByPlayer1GridSelector, getNumGamesWonByPlayer2GridSelector} from "../selectors/game";
 
 interface StateFromProps {
@@ -26,9 +26,8 @@ export interface AddCoin {
 interface DispatchFromProps {
     addCoin: AddCoin,
     beginNewGame: Function,
+    resetScore: Function
 }
-
-
 
 const mapStateToProps = (state: State): StateFromProps => ({
     grid: getTransposedGridSelector(state),
@@ -45,6 +44,9 @@ const mapDispatchToProps = (dispatch: GenericDispatch): DispatchFromProps => ({
     },
     beginNewGame() {
         dispatch(beginNewGameThunk());
+    },
+    resetScore() {
+        dispatch(resetScoreThunk());
     }
 });
 

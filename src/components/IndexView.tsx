@@ -10,6 +10,7 @@ export interface IndexViewProps {
     nextPlayer: PlayerCoinSlot,
     addCoin: AddCoin,
     beginNewGame: Function,
+    resetScore: Function,
     numGamesWonByPlayer1: number,
     numGamesWonByPlayer2: number,
 }
@@ -23,6 +24,10 @@ class IndexView extends React.Component<IndexViewProps, {}> {
 
     handleBeginNewGameClick = () => {
         this.props.beginNewGame();
+    };
+
+    handleResetScoreClick = () => {
+        this.props.resetScore();
     };
 
     render() {
@@ -59,11 +64,14 @@ class IndexView extends React.Component<IndexViewProps, {}> {
                             <Col span={4}>
                                 <h3>Score</h3>
                             </Col>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Badge count={numGamesWonByPlayer1} showZero><Avatar className={`grid__coin--player-1`} icon="user" /></Badge> Player 1
                             </Col>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Badge count={numGamesWonByPlayer2} showZero><Avatar className={`grid__coin--player-2`} icon="user" /></Badge> Player 2
+                            </Col>
+                            <Col span={4}>
+                                <Button onClick={this.handleResetScoreClick}>Reset score</Button>
                             </Col>
                         </Row>
                     </Col>
