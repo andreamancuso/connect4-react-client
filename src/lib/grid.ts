@@ -64,14 +64,22 @@ export const getGrid = ():Grid => {
 export const getTransposedGrid = (grid:Grid):Grid =>
     grid[0].map((col, i) => grid.map(row => row[i]));
 
-export const addCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerCoinSlot, columnIndex: number): Grid => {
+export const canAddCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerCoinSlot, columnIndex: number): boolean => {
     if (grid[columnIndex] === undefined) {
         // Invalid column index
-        return grid;
+        return false;
     }
 
     if (grid[columnIndex].filter((slot: CoinSlot) => slot !== CoinSlot.Blank).length >= grid[columnIndex].length) {
         // Column is full
+        return false;
+    }
+
+    return true;
+};
+
+export const addCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerCoinSlot, columnIndex: number): Grid => {
+    if (!canAddCoinToColumnWithinGrid(grid, playerCoinSlot, columnIndex)) {
         return grid;
     }
 
@@ -96,13 +104,17 @@ export const getGridStatus = (grid: Grid): CoinSlot => {
         for (let j = 0, slots = grid[i].length; j < slots; j++) {
             currentSlot = grid[i][j];
 
-            if (currentSlot !== CoinSlot.Blank && isVerticalConnect(grid[i], j, currentSlot)) {
+            if (currentSlot === CoinSlot.Blank) {
+                continue;
+            }
+
+            if (isVerticalConnect(grid[i], j, currentSlot)) {
                 return currentSlot;
-            } else if(currentSlot !== CoinSlot.Blank && isHorizontalConnect(grid, i, j, currentSlot)) {
+            } else if(isHorizontalConnect(grid, i, j, currentSlot)) {
                 return currentSlot;
-            } else if(currentSlot !== CoinSlot.Blank && isDownRightDiagonalConnect(grid, i, j, currentSlot)) {
+            } else if(isDownRightDiagonalConnect(grid, i, j, currentSlot)) {
                 return currentSlot;
-            } else if(currentSlot !== CoinSlot.Blank && isUpRightDiagonalConnect(grid, i, j, currentSlot)) {
+            } else if(isUpRightDiagonalConnect(grid, i, j, currentSlot)) {
                 return currentSlot;
             }
         }

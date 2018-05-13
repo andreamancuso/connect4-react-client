@@ -1,24 +1,29 @@
 import * as React from "react";
 import {Col, Avatar, Row, Button, Badge} from 'antd';
-import {CoinSlot, Grid, PlayerCoinSlot} from "../types";
-import {AddCoin} from "../containers/IndexView";
+import {CoinSlot, Grid, PlayerCoinSlot} from "../../types";
+import {AddMove} from "../containers/IndexView";
 
 export interface IndexViewProps {
     grid: Grid,
     gridStatus: CoinSlot,
     isGameInProgress: boolean,
     nextPlayer: PlayerCoinSlot,
-    addCoin: AddCoin,
+    addMove: AddMove,
     beginNewGame: Function,
     resetScore: Function,
     numGamesWonByPlayer1: number,
     numGamesWonByPlayer2: number,
+    allowedColumns: number[],
 }
 
 class IndexView extends React.Component<IndexViewProps, {}> {
     handleColClick = (columnIndex: number) => {
-        if (this.props.isGameInProgress) {
-            this.props.addCoin(this.props.nextPlayer, columnIndex);
+        if (!this.props.isGameInProgress) {
+            console.log('game over');
+        } else if (this.props.allowedColumns.indexOf(columnIndex) === -1) {
+            console.log('column is full');
+        } else {
+            this.props.addMove(this.props.nextPlayer, columnIndex);
         }
     };
 

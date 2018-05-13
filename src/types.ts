@@ -1,19 +1,5 @@
-import {Action, Dispatch} from "redux";
-import {ThunkAction} from "redux-thunk";
-
-export type GenericThunkAction = ThunkAction<void, State, any>;
-
-export interface GenericDispatch {
-    <R>(asyncAction: (dispatch: Dispatch<GenericThunkAction>, getState: () => State, extra: any) => R): R;
-    <R>(asyncAction: (dispatch: Dispatch<GenericThunkAction>, getState: () => State) => R): R;
-    <R>(asyncAction: (dispatch: Dispatch<GenericThunkAction>) => R): R;
-    (action: Action): void;
-}
-
-export interface AddCoinCoordinates {
-    playerCoinSlot: number,
-    columnIndex: number
-}
+import * as firebase from "firebase";
+import Timestamp = firebase.firestore.Timestamp;
 
 export enum CoinSlot {
     Blank = 0,
@@ -23,19 +9,30 @@ export enum CoinSlot {
 
 export type PlayerCoinSlot = CoinSlot.Player1|CoinSlot.Player2;
 
-export type Column = Array<CoinSlot>;
-export type Grid = Array<Column>
+export type Column = CoinSlot[];
+export type Grid = Column[]
 
-export interface GridState {
-    grid: Grid,
-    lastPlayerCoinSlot
+export interface Move {
+    player: PlayerCoinSlot,
+    columnIndex: number
 }
 
-export interface GameState {
-    games: Array<PlayerCoinSlot>
+export interface Game {
+    player1: string,
+    player2: string,
+    moves: Move[],
+    date: Date,
+    result: null|CoinSlot
 }
 
-export interface State {
-    game: GameState,
-    grid: GridState
+export interface FirestoreGame {
+    player1: string,
+    player2: string,
+    moves: Move[],
+    date: Timestamp,
+    result: null|CoinSlot
+}
+
+export interface GameEntity extends Game {
+    id: string,
 }

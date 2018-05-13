@@ -1,14 +1,16 @@
 import {connect} from "react-redux";
 
 import IndexView from '../components/IndexView';
-import {CoinSlot, GenericDispatch, Grid, PlayerCoinSlot, State} from "../types";
-import {addCoin} from "../actions/grid";
+import {CoinSlot, Grid, PlayerCoinSlot} from "../../types";
 import {
+    getAllowedColumns,
     getGridStatusSelector, getTransposedGridSelector, isGameInProgressSelector,
     nextPlayerSelector
 } from "../selectors/grid";
 import {beginNewGameThunk, resetScoreThunk} from "../thunks/game";
 import {getNumGamesWonByPlayer1GridSelector, getNumGamesWonByPlayer2GridSelector} from "../selectors/game";
+import {addMove} from "../actions/game";
+import {GenericDispatch, State} from "../types";
 
 interface StateFromProps {
     grid: Grid,
@@ -17,14 +19,15 @@ interface StateFromProps {
     isGameInProgress: boolean,
     numGamesWonByPlayer1: number,
     numGamesWonByPlayer2: number,
+    allowedColumns: number[],
 }
 
-export interface AddCoin {
+export interface AddMove {
     (playerCoinSlot: number, columnIndex: number): void;
 }
 
 interface DispatchFromProps {
-    addCoin: AddCoin,
+    addMove: AddMove,
     beginNewGame: Function,
     resetScore: Function
 }
@@ -36,11 +39,12 @@ const mapStateToProps = (state: State): StateFromProps => ({
     nextPlayer: nextPlayerSelector(state),
     numGamesWonByPlayer1: getNumGamesWonByPlayer1GridSelector(state),
     numGamesWonByPlayer2: getNumGamesWonByPlayer2GridSelector(state),
+    allowedColumns: getAllowedColumns(state),
 });
 
 const mapDispatchToProps = (dispatch: GenericDispatch): DispatchFromProps => ({
-    addCoin(playerCoinSlot: number, columnIndex: number) {
-        dispatch(addCoin(playerCoinSlot, columnIndex));
+    addMove(playerCoinSlot: PlayerCoinSlot, columnIndex: number) {
+        dispatch(addMove(playerCoinSlot, columnIndex));
     },
     beginNewGame() {
         dispatch(beginNewGameThunk());

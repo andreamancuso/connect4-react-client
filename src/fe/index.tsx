@@ -9,10 +9,10 @@ import {combineReducers, createStore, applyMiddleware, Store, GenericStoreEnhanc
 import {reducers} from './reducers/root';
 
 const App = require('./components/App').default;
-import {State} from "./types";
 
 import 'antd/dist/antd.css';
 import './index.less';
+import {State} from "./types";
 
 const rootReducer: Reducer<State> = combineReducers<State>(reducers);
 const baseMiddlewares: GenericStoreEnhancer = applyMiddleware(thunk);

@@ -15,6 +15,7 @@
     "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": false,
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "redux": ["node_modules/redux"]

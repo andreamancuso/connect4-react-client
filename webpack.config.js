@@ -30,7 +30,7 @@ export default {
 
     entry: [
         'react-hot-loader/patch',
-        path.join(__dirname, 'src/index.tsx'),
+        path.join(__dirname, 'src/fe/index.tsx'),
     ],
 
     output: {

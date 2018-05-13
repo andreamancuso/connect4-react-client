@@ -1,7 +1,7 @@
-import {CoinSlot, GenericThunkAction, PlayerCoinSlot, State} from "../types";
+import {CoinSlot} from "../../types";
+import {GenericThunkAction} from "../types";
 import {getGridStatusSelector} from "../selectors/grid";
-import {recordPlayerWin, resetScore} from "../actions/game";
-import {resetGrid} from "../actions/grid";
+import {recordPlayerWin, resetMoves, resetScore} from "../actions/game";
 
 export const beginNewGameThunk = (): GenericThunkAction =>
     (dispatch, getState): void => {
@@ -9,13 +9,13 @@ export const beginNewGameThunk = (): GenericThunkAction =>
 
         if (coinSlot !== CoinSlot.Blank) {
             dispatch(recordPlayerWin(coinSlot));
-            dispatch(resetGrid());
+            dispatch(resetMoves());
         }
     };
 
 export const resetScoreThunk = (): GenericThunkAction =>
     (dispatch, getState): void => {
-        dispatch(resetGrid());
+        dispatch(resetMoves());
         dispatch(resetScore());
     };
 
