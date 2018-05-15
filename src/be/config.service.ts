@@ -9,7 +9,7 @@ export interface EnvConfig {
 export class ConfigService {
     private readonly envConfig: EnvConfig;
 
-    constructor(filePath: string) {
+    constructor(filePath = `.env.${process.env.NODE_ENV}`) {
         const config = dotenv.parse(fs.readFileSync(filePath));
         this.envConfig = this.validateInput(config);
     }
