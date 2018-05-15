@@ -19,7 +19,8 @@
     "baseUrl": ".",
     "paths": {
       "redux": ["node_modules/redux"]
-    }
+    },
+    "lib": ["es2015"]
   },
   "exclude": [
     "node_modules"
