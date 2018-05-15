@@ -25,7 +25,7 @@ const store: Store<State> = createStore<State>(
 ReactDOM.render(
     <AppContainer>
         <Provider store={store}>
-            <App history={history}/>
+            <App/>
         </Provider>
     </AppContainer>,
     document.getElementById('root')

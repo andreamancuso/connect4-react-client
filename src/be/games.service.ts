@@ -1,14 +1,15 @@
 import { Injectable, Inject } from '@nestjs/common';
-import {FirestoreGame, Game, GameEntity} from "../types";
+import {Game, GameEntity} from "../types";
 import * as firebase from "firebase";
-import {CreateGameDto, UpdateGameDto} from "./types";
+import {CreateGameDto, FirestoreGame, UpdateGameDto} from "./types";
 import {convertGameFirestoreModelIntoGameModel, getGameFirestoreModel} from "./games.model";
+import {PROVIDER_FIRESTORE} from "./constants";
 
 @Injectable()
 export class GamesService {
     private gamesCollectionRef: firebase.firestore.CollectionReference;
 
-    constructor(@Inject('Firestore') private readonly firestore: firebase.firestore.Firestore) {
+    constructor(@Inject(PROVIDER_FIRESTORE) private readonly firestore: firebase.firestore.Firestore) {
         this.gamesCollectionRef = firestore.collection('games');
     }
 
@@ -76,6 +77,9 @@ export class GamesService {
         });
     }
 
+    /**
+     * Optimistic update here, should verify that document exists first
+     */
     update(id: string, updateGameDto: UpdateGameDto) {
         const dataToUpdate = {
             moves: updateGameDto.moves,

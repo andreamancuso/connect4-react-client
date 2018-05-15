@@ -1,6 +1,3 @@
-import * as firebase from "firebase";
-import Timestamp = firebase.firestore.Timestamp;
-
 export enum CoinSlot {
     Blank = 0,
     Player1 = 1,
@@ -22,14 +19,6 @@ export interface Game {
     player2: string,
     moves: Move[],
     date: Date,
-    result: null|CoinSlot
-}
-
-export interface FirestoreGame {
-    player1: string,
-    player2: string,
-    moves: Move[],
-    date: Timestamp,
     result: null|CoinSlot
 }
 

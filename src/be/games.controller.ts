@@ -1,6 +1,8 @@
 import {
     Get, Post, Put, Param, Body,
-    Controller, Inject, HttpCode, Res, HttpStatus, Req
+    Controller, Inject, HttpCode,
+    Res, HttpStatus, ValidationPipe,
+    HttpException
 } from '@nestjs/common';
 import {GamesService} from "./games.service";
 import {Game, GameEntity} from "../types";
@@ -18,27 +20,26 @@ export class GamesController {
     @Get(':id')
     async findOne(@Param('id') id: string) {
         const result = await this.gamesService.findOne(id);
+
         if (!result) {
-            // todo: return 404
+            throw new HttpException('Game not found', HttpStatus.NOT_FOUND);
         }
 
         return result;
     }
 
     @Post()
-    async create(@Body() createGameDto: CreateGameDto, @Res() res) {
-        try {
-            const game: GameEntity = await this.gamesService.create(createGameDto);
-
-            res
-            .append('Location', `/games/${game.id}`)
-            .status(HttpStatus.CREATED)
-            .json(game);
-        } catch(error) {
-            res
-            .status(500)
-            .json({message: error.message});
+    async create(@Body(new ValidationPipe({transform: true})) createGameDto: CreateGameDto, @Res() res) {
+        if (!createGameDto.player1 || !createGameDto.player1) {
+            throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
         }
+
+        const game: GameEntity = await this.gamesService.create(createGameDto);
+
+        res
+        .append('Location', `/games/${game.id}`)
+        .status(HttpStatus.CREATED)
+        .json(game);
     }
 
     @HttpCode(204)

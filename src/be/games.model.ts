@@ -1,5 +1,5 @@
 import * as firebase from "firebase";
-import {FirestoreGame} from "../types";
+import {FirestoreGame} from "./types";
 
 export const getGameFirestoreModel = (): FirestoreGame => ({
     player1: '',
