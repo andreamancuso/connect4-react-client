@@ -1,3 +1,10 @@
+export interface APIClientConf {
+    timeout: number,
+    endpoints: {
+        base: string
+    }
+}
+
 export enum CoinSlot {
     Blank = 0,
     Player1 = 1,
@@ -5,6 +12,13 @@ export enum CoinSlot {
 }
 
 export type PlayerCoinSlot = CoinSlot.Player1|CoinSlot.Player2;
+
+export enum GameResult {
+    InProgress = -1,
+    Draw = 0,
+    Player1Won = 1,
+    Player2Won = 2
+}
 
 export type Column = CoinSlot[];
 export type Grid = Column[]
@@ -19,7 +33,7 @@ export interface Game {
     player2: string,
     moves: Move[],
     date: Date,
-    result: null|CoinSlot
+    result: GameResult
 }
 
 export interface GameEntity extends Game {

@@ -100,8 +100,8 @@ export const addCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerCoin
  */
 export const getGridStatus = (grid: Grid): CoinSlot => {
     let currentSlot;
-    for (let i = 0, rows = grid.length; i < rows; i++) {
-        for (let j = 0, slots = grid[i].length; j < slots; j++) {
+    for (let i = 0, numCols = grid.length; i < numCols; i++) {
+        for (let j = 0, numSlots = grid[i].length; j < numSlots; j++) {
             currentSlot = grid[i][j];
 
             if (currentSlot === CoinSlot.Blank) {

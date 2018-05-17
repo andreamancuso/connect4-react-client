@@ -1,17 +1,15 @@
 import {connect} from "react-redux";
 
-import IndexView from '../components/IndexView';
-
+import App from '../components/App';
 import {GenericDispatch, State} from "../types";
-import {createGameThunk} from "../thunks/game";
+import {initialActionThunk} from "../thunks/game";
 
 interface StateFromProps {
 
 }
 
-
 interface DispatchFromProps {
-    beginNewGame: () => Promise<string>
+    initialAction: Function,
 }
 
 const mapStateToProps = (state: State): StateFromProps => ({
@@ -19,12 +17,12 @@ const mapStateToProps = (state: State): StateFromProps => ({
 });
 
 const mapDispatchToProps = (dispatch: GenericDispatch): DispatchFromProps => ({
-    beginNewGame(): Promise<string> {
-        return dispatch(createGameThunk());
+    initialAction() {
+        dispatch(initialActionThunk());
     }
 });
 
 export default connect<StateFromProps, DispatchFromProps>(
     mapStateToProps,
     mapDispatchToProps
-)(IndexView);
+)(App);

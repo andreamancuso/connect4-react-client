@@ -4,7 +4,9 @@ import {
     getTransposedGrid
 } from "../../lib/grid";
 import {CoinSlot, Grid, Move, PlayerCoinSlot} from "../../types";
-import {movesSelector} from "./game";
+import {State} from "../types";
+
+export const movesSelector = (state:State): Move[] => state.game.selectedGame.data.moves;
 
 export const getGridSelector = createSelector(
     movesSelector,

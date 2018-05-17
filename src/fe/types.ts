@@ -1,24 +1,26 @@
-import {Action, Dispatch} from "redux";
-import {ThunkAction} from "redux-thunk";
-import {Move, PlayerCoinSlot} from "../types";
+import {Dispatch} from "redux";
+import {GameEntity} from "../types";
 
-export type GenericThunkAction = ThunkAction<void, State, any>;
+export type GenericDispatch = Dispatch<State>;
 
-export interface GenericDispatch {
-    <R>(asyncAction: (dispatch: Dispatch<GenericThunkAction>, getState: () => State, extra: any) => R): R;
-    <R>(asyncAction: (dispatch: Dispatch<GenericThunkAction>, getState: () => State) => R): R;
-    <R>(asyncAction: (dispatch: Dispatch<GenericThunkAction>) => R): R;
-    (action: Action): void;
+export type isLoading = boolean;
+export type Error = string;
+
+export interface ListStore<T> {
+    data: T[],
+    isLoading: isLoading,
+    error: Error,
 }
 
-export interface AddCoinCoordinates {
-    playerCoinSlot: number,
-    columnIndex: number
+export interface EntityStore<T> {
+    data: T,
+    isLoading: isLoading,
+    error: Error,
 }
 
 export interface GameState {
-    games: PlayerCoinSlot[],
-    moves: Move[],
+    games: ListStore<GameEntity>,
+    selectedGame: EntityStore<GameEntity>,
 }
 
 export interface State {

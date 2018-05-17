@@ -1,9 +1,8 @@
 import {connect} from "react-redux";
 
-import IndexView from '../components/IndexView';
+import GameIndexView from '../components/GameIndexView';
 
 import {GenericDispatch, State} from "../types";
-import {createGameThunk} from "../thunks/game";
 
 interface StateFromProps {
 
@@ -11,7 +10,7 @@ interface StateFromProps {
 
 
 interface DispatchFromProps {
-    beginNewGame: () => Promise<string>
+
 }
 
 const mapStateToProps = (state: State): StateFromProps => ({
@@ -19,12 +18,10 @@ const mapStateToProps = (state: State): StateFromProps => ({
 });
 
 const mapDispatchToProps = (dispatch: GenericDispatch): DispatchFromProps => ({
-    beginNewGame(): Promise<string> {
-        return dispatch(createGameThunk());
-    }
+
 });
 
 export default connect<StateFromProps, DispatchFromProps>(
     mapStateToProps,
     mapDispatchToProps
-)(IndexView);
+)(GameIndexView);

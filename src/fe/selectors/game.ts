@@ -1,18 +1,15 @@
 import {createSelector} from 'reselect';
-import {CoinSlot, Move, PlayerCoinSlot} from "../../types";
-import {State} from "../types";
+import {CoinSlot, GameResult} from "../../types";
+import {getGridStatusSelector} from "./grid";
 
-const gamesSelector = (state:State): Array<PlayerCoinSlot> => state.game.games;
-export const movesSelector = (state:State): Move[] => state.game.moves;
-
-export const getNumGamesWonByPlayer1GridSelector = createSelector(
-    gamesSelector,
-    (games: PlayerCoinSlot[]):number =>
-        games.filter((playerCoinSlot: PlayerCoinSlot) => playerCoinSlot === CoinSlot.Player1).length
-);
-
-export const getNumGamesWonByPlayer2GridSelector = createSelector(
-    gamesSelector,
-    (games: PlayerCoinSlot[]):number =>
-        games.filter((playerCoinSlot: PlayerCoinSlot) => playerCoinSlot === CoinSlot.Player2).length
+export const getSelectedGameResult = createSelector(
+    getGridStatusSelector,
+    (gridStatus: CoinSlot): GameResult => {
+        switch (gridStatus) {
+            case CoinSlot.Blank: return GameResult.InProgress;
+            case CoinSlot.Player1: return GameResult.Player1Won;
+            case CoinSlot.Player2: return GameResult.Player2Won;
+            default: return GameResult.InProgress;
+        }
+    }
 );
