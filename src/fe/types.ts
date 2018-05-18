@@ -26,3 +26,7 @@ export interface GameState {
 export interface State {
     game: GameState
 }
+
+export interface IGameRouteParams {
+    id: string
+}

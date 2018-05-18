@@ -1,18 +1,25 @@
 import * as React from "react";
-import {Col, Avatar, Row, Button, Badge} from 'antd';
-import {CoinSlot, GameResult, Grid, PlayerCoinSlot} from "../../types";
-import {AddMove} from "../containers/GameView";
+import {Col, Avatar, Row, Button} from 'antd';
+import {GameResult, Grid, PlayerCoinSlot} from "../../types";
+import {IAddMove, IFetchGame} from "../containers/GameView";
 import {History} from "history";
+import {match} from "react-router";
+import {IGameRouteParams} from "../types";
 
 export interface GameViewProps {
     grid: Grid,
     gameResult: GameResult,
     isGameInProgress: boolean,
     nextPlayer: PlayerCoinSlot,
-    addMove: AddMove,
-    beginNewGame: Function,
+    nextPlayerName: string,
+    addMove: IAddMove,
+    fetchGame: IFetchGame,
+    resetGame: Function,
     allowedColumns: number[],
-    history: History
+    history: History,
+    match: match<IGameRouteParams>,
+    player1Name: string,
+    player2Name: string
 }
 
 class GameView extends React.Component<GameViewProps, {}> {
@@ -26,13 +33,22 @@ class GameView extends React.Component<GameViewProps, {}> {
         }
     };
 
-    handleBeginNewGameClick = () => {
-        this.props.beginNewGame()
-            .then((gameId: string) => this.props.history.push(`/games/${gameId}`));
+    handleFinishGameClick = () => {
+        this.props.resetGame();
+        this.props.history.push(`/`);
     };
 
+    componentDidMount() {
+        const gameId = this.props.match.params.id;
+        if (!gameId) {
+            // todo: redirect to index?
+        }
+
+        this.props.fetchGame(gameId);
+    }
+
     render() {
-        const {grid, nextPlayer, gameResult} = this.props;
+        const {grid, nextPlayer, gameResult, player1Name, player2Name, nextPlayerName} = this.props;
 
         return (
             <div style={{position: 'relative' }}>
@@ -64,20 +80,20 @@ class GameView extends React.Component<GameViewProps, {}> {
                                 <h3>Score</h3>
                             </Col>
                             <Col span={6}>
-                                <Avatar className={`grid__coin--player-1`} icon="user" /> Player 1
+                                <Avatar className={`grid__coin--player-1`} icon="user" /> {player1Name}
                             </Col>
                             <Col span={6}>
-                                <Avatar className={`grid__coin--player-2`} icon="user" /> Player 2
+                                <Avatar className={`grid__coin--player-2`} icon="user" /> {player2Name}
                             </Col>
                         </Row>
                     </Col>
                     <Col span={12}>
                         {gameResult === GameResult.InProgress ?
-                            <div>Next player: <Avatar className={`grid__coin--player-${nextPlayer}`} icon="user" /> Player {nextPlayer}</div>
+                            <div>Next player: <Avatar className={`grid__coin--player-${nextPlayer}`} icon="user" /> {nextPlayerName}</div>
                             : <div>
                                 <Avatar className={`grid__coin--player-${gameResult}`} icon="user" /> Player {gameResult} wins!
                                 &nbsp;
-                                <Button onClick={this.handleBeginNewGameClick}>Begin new game</Button>
+                                <Button onClick={this.handleFinishGameClick}>Back to main page</Button>
                             </div>
                         }
 

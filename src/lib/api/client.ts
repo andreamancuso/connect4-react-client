@@ -18,12 +18,12 @@ class APIClient {
         });
     }
 
-    post(path: string, body?: any): Promise<AxiosResponse> {
+    post<T>(path: string, body?: any): Promise<T> {
         return new Promise((resolve, reject) => {
             const {endpoints: {base: baseEndpoint}, timeout} = this.conf;
 
             axios.post(`${baseEndpoint}${path}`, body, {timeout})
-            .then((response: AxiosResponse) => resolve(response))
+            .then((response: AxiosResponse<T>) => resolve(response.data))
             .catch(this.handleError(reject));
         });
     }

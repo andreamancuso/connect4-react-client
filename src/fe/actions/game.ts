@@ -43,14 +43,14 @@ export type UPDATE_GAME_SUCCESS = typeof UPDATE_GAME_SUCCESS;
 export const UPDATE_GAME_FAILURE = 'UPDATE_GAME_FAILURE';
 export type UPDATE_GAME_FAILURE = typeof UPDATE_GAME_FAILURE;
 
-export const RECORD_PLAYER_WIN = 'RECORD_PLAYER_WIN';
-export type RECORD_PLAYER_WIN = typeof RECORD_PLAYER_WIN;
-
-export const RESET_SCORE = 'RESET_SCORE';
-export type RESET_SCORE = typeof RESET_SCORE;
-
 export const RESET_MOVES = 'RESET_MOVES';
 export type RESET_MOVES = typeof RESET_MOVES;
+
+export const RESET_GAME = 'RESET_GAME';
+export type RESET_GAME = typeof RESET_GAME;
+
+export const SET_PLAYER_NAME = 'SET_PLAYER_NAME';
+export type SET_PLAYER_NAME = typeof SET_PLAYER_NAME;
 
 export interface AddMove {
     type: ADD_MOVE;
@@ -61,12 +61,21 @@ export interface SetResult {
     type: SET_RESULT;
     payload: GameResult
 }
-export interface ResetScore {
-    type: RESET_SCORE;
+
+export interface SetPlayerName {
+    type: SET_PLAYER_NAME;
+    payload: {
+        player1or2: PlayerCoinSlot,
+        name: string
+    }
 }
 
 export interface ResetMoves {
     type: RESET_MOVES;
+}
+
+export interface ResetGame {
+    type: RESET_GAME;
 }
 
 export interface FetchGame {
@@ -123,7 +132,7 @@ export interface UpdateGameFailure {
     payload: Error
 }
 
-export type GameAction = ResetScore | AddMove | ResetMoves | SetResult |
+export type GameAction = SetPlayerName | AddMove | ResetMoves | ResetGame | SetResult |
     FetchGame | FetchGameSuccess | FetchGameFailure | FetchGames | FetchGamesSuccess | FetchGamesFailure |
     CreateGame | CreateGameSuccess | CreateGameFailure | UpdateGame | UpdateGameSuccess | UpdateGameFailure;
 
@@ -139,15 +148,22 @@ export function setResult(result: GameResult): SetResult {
     };
 }
 
-export function resetScore(): ResetScore {
+export function setPlayerName(player1or2: PlayerCoinSlot, name: string): SetPlayerName {
     return {
-        type: RESET_SCORE
+        type: SET_PLAYER_NAME,
+        payload: {player1or2, name}
     };
 }
 
 export function resetMoves(): ResetMoves {
     return {
         type: RESET_MOVES
+    };
+}
+
+export function resetGame(): ResetGame {
+    return {
+        type: RESET_GAME
     };
 }
 

@@ -1,13 +1,22 @@
-import {Move, PlayerCoinSlot} from "../../types";
+import {Move} from "../../types";
 import {
-    ADD_MOVE, CREATE_GAME, CREATE_GAME_FAILURE, CREATE_GAME_SUCCESS, FETCH_GAME, FETCH_GAME_FAILURE, FETCH_GAME_SUCCESS,
+    ADD_MOVE,
+    CREATE_GAME,
+    CREATE_GAME_FAILURE,
+    CREATE_GAME_SUCCESS,
+    FETCH_GAME,
+    FETCH_GAME_FAILURE,
+    FETCH_GAME_SUCCESS,
     FETCH_GAMES,
     FETCH_GAMES_FAILURE,
     FETCH_GAMES_SUCCESS,
-    GameAction,
-    RECORD_PLAYER_WIN,
+    GameAction, RESET_GAME,
     RESET_MOVES,
-    RESET_SCORE, SET_RESULT, UPDATE_GAME, UPDATE_GAME_FAILURE, UPDATE_GAME_SUCCESS
+    SET_PLAYER_NAME,
+    SET_RESULT,
+    UPDATE_GAME,
+    UPDATE_GAME_FAILURE,
+    UPDATE_GAME_SUCCESS
 } from "../actions/game";
 import {GameState} from "../types";
 import {getGameEntityModel} from "../../lib/models";
@@ -27,6 +36,16 @@ export const getInitialState = (): GameState => ({
 
 export const gameReducer = (state = getInitialState(), action: GameAction): GameState => {
     switch (action.type) {
+        case RESET_GAME:
+            return {
+                ...state,
+                selectedGame: {
+                    data: getGameEntityModel(),
+                    isLoading: false,
+                    error: ''
+                }
+            };
+
         case ADD_MOVE: {
             const newMoves: Move[] = [...state.selectedGame.data.moves];
             newMoves.push(action.payload);
@@ -51,6 +70,19 @@ export const gameReducer = (state = getInitialState(), action: GameAction): Game
                     data: {
                         ...state.selectedGame.data,
                         result: action.payload
+                    }
+                }
+            };
+        }
+
+        case SET_PLAYER_NAME: {
+            return {
+                ...state,
+                selectedGame: {
+                    ...state.selectedGame,
+                    data: {
+                        ...state.selectedGame.data,
+                        [`player${action.payload.player1or2}`]: action.payload.name
                     }
                 }
             };

@@ -35,19 +35,23 @@ export class GamesService {
         });
     }
 
-    findOne(id: string): Promise<Game|null> {
+    findOne(id: string): Promise<GameEntity|null> {
         return new Promise((resolve, reject) => {
             this.gamesCollectionRef
                 .doc(id)
                 .get()
                 .then((gameSnapshot: firebase.firestore.DocumentSnapshot) => {
-                    let result: Game|null = null;
+                    let result: GameEntity|null = null;
 
                     if (gameSnapshot.exists) {
+                        const {id} = gameSnapshot;
                         const documentData: firebase.firestore.DocumentData = gameSnapshot.data() as firebase.firestore.DocumentData;
                         const game: FirestoreGame = documentData as FirestoreGame;
 
-                        result = convertGameFirestoreModelIntoGameModel(game);
+                        result = {
+                            id,
+                            ...convertGameFirestoreModelIntoGameModel(game)
+                        };
                     }
 
                     resolve(result);

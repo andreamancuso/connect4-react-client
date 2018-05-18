@@ -13,12 +13,12 @@ export class GamesController {
     constructor(@Inject(GamesService) private readonly gamesService: GamesService) {}
 
     @Get()
-    findAll(): Promise<Game[]> {
+    findAll(): Promise<GameEntity[]> {
         return this.gamesService.findAll();
     }
 
     @Get(':id')
-    async findOne(@Param('id') id: string) {
+    async findOne(@Param('id') id: string): Promise<GameEntity> {
         const result = await this.gamesService.findOne(id);
 
         if (!result) {
@@ -31,6 +31,7 @@ export class GamesController {
     @Post()
     async create(@Body(new ValidationPipe({transform: true})) createGameDto: CreateGameDto, @Res() res) {
         if (!createGameDto.player1 || !createGameDto.player1) {
+            // todo: once metatype gets fixed, remove this as ValidationPipe should just work
             throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
         }
 

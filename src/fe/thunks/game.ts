@@ -1,11 +1,10 @@
-import {CoinSlot, GameEntity, GameResult, PlayerCoinSlot} from "../../types";
+import {GameEntity, GameResult, PlayerCoinSlot} from "../../types";
 import {State} from "../types";
-import {getGridStatusSelector} from "../selectors/grid";
 import {
     addMove, createGame, createGameFailure, createGameSuccess,
     fetchGame, fetchGameFailure,
     fetchGames, fetchGamesFailure, fetchGamesSuccess, fetchGameSuccess, resetMoves,
-    resetScore, setResult, updateGame, updateGameFailure, updateGameSuccess
+    setResult, updateGame, updateGameFailure, updateGameSuccess
 } from "../actions/game";
 import APIClient from "../../lib/api/client";
 import {getSelectedGameResult} from "../selectors/game";
@@ -59,14 +58,16 @@ export const createGameThunk = (): ThunkAction<Promise<string>, State, APIClient
     (dispatch: Dispatch<State>, getState: () => State, apiClient: APIClient): Promise<string> => {
         return new Promise(async(resolve, reject) => {
             try {
-                dispatch(createGame());
-                const response: AxiosResponse = await apiClient.post(`games`, undefined);
-                const gameId = response.headers.location;
+                const state: State = getState();
+                const {player1, player2} = state.game.selectedGame.data;
 
-                console.log(gameId);
+                dispatch(createGame());
+                const game: GameEntity = await apiClient.post<GameEntity>(`games`, {
+                    player1, player2
+                });
 
                 dispatch(createGameSuccess());
-                resolve(gameId);
+                resolve(game.id);
             } catch (error) {
                 dispatch(createGameFailure(String(error)));
                 reject(error);
@@ -82,7 +83,7 @@ export const updateGameThunk = (): ThunkAction<Promise<void>, State, APIClient> 
                 const {id: gameId, moves, result} = state.game.selectedGame.data;
 
                 dispatch(updateGame());
-                await apiClient.put(`games/${gameId}`, {moves});
+                await apiClient.put(`games/${gameId}`, {moves, result});
                 dispatch(updateGameSuccess());
                 resolve();
             } catch (error) {
