@@ -1,30 +1,30 @@
 import {Dispatch} from "redux";
-import {GameEntity} from "../types";
+import {IGameEntity} from "../types";
 
-export type GenericDispatch = Dispatch<State>;
+export type GenericDispatch = Dispatch<IState>;
 
 export type isLoading = boolean;
 export type Error = string;
 
-export interface ListStore<T> {
+interface IListStore<T> {
     data: T[],
     isLoading: isLoading,
     error: Error,
 }
 
-export interface EntityStore<T> {
+interface IEntityStore<T> {
     data: T,
     isLoading: isLoading,
     error: Error,
 }
 
-export interface GameState {
-    games: ListStore<GameEntity>,
-    selectedGame: EntityStore<GameEntity>,
+export interface IGameState {
+    games: IListStore<IGameEntity>,
+    selectedGame: IEntityStore<IGameEntity>,
 }
 
-export interface State {
-    game: GameState
+export interface IState {
+    game: IGameState
 }
 
 export interface IGameRouteParams {

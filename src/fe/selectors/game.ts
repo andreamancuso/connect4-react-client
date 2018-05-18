@@ -1,18 +1,18 @@
 import {createSelector} from 'reselect';
-import {CoinSlot, GameResult, Grid, Move, PlayerCoinSlot} from "../../types";
+import {CoinSlot, GameResult, Grid, IMove, PlayerCoinSlot} from "../../types";
 import {
     addCoinToColumnWithinGrid, canAddCoinToColumnWithinGrid, getGrid, getGridStatus,
     getTransposedGrid
 } from "../../lib/grid";
-import {State} from "../types";
+import {IState} from "../types";
 
-export const movesSelector = (state:State): Move[] => state.game.selectedGame.data.moves;
-export const player1Selector = (state:State): string => state.game.selectedGame.data.player1;
-export const player2Selector = (state:State): string => state.game.selectedGame.data.player2;
+export const movesSelector = (state:IState): IMove[] => state.game.selectedGame.data.moves;
+export const player1Selector = (state:IState): string => state.game.selectedGame.data.player1;
+export const player2Selector = (state:IState): string => state.game.selectedGame.data.player2;
 
 export const getGridSelector = createSelector(
     movesSelector,
-    (moves: Move[]):Grid => {
+    (moves: IMove[]):Grid => {
         let grid = getGrid();
 
         moves.forEach(({player, columnIndex}) => {
@@ -40,7 +40,7 @@ export const isGameInProgressSelector = createSelector(
 
 export const nextPlayerSelector = createSelector(
     movesSelector,
-    (moves: Move[]):PlayerCoinSlot => {
+    (moves: IMove[]):PlayerCoinSlot => {
         if (moves.length === 0) {
             return CoinSlot.Player1;
         } else {
@@ -73,6 +73,19 @@ export const getSelectedGameResult = createSelector(
             case CoinSlot.Player1: return GameResult.Player1Won;
             case CoinSlot.Player2: return GameResult.Player2Won;
             default: return GameResult.InProgress;
+        }
+    }
+);
+
+export const winnerNameSelector = createSelector(
+    [getSelectedGameResult, player1Selector, player2Selector],
+    (result: GameResult, player1: string, player2: string): string => {
+        if (result === GameResult.Player1Won) {
+            return player1;
+        } else if (result === GameResult.Player2Won) {
+            return player2;
+        } else {
+            return '';
         }
     }
 );

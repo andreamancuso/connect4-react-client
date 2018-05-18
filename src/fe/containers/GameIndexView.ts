@@ -2,26 +2,26 @@ import {connect} from "react-redux";
 
 import GameIndexView from '../components/GameIndexView';
 
-import {GenericDispatch, State} from "../types";
+import {GenericDispatch, IState} from "../types";
 
-interface StateFromProps {
-
-}
-
-
-interface DispatchFromProps {
+interface IStateFromProps {
 
 }
 
-const mapStateToProps = (state: State): StateFromProps => ({
+
+interface IDispatchFromProps {
+
+}
+
+const mapStateToProps = (state: IState): IStateFromProps => ({
 
 });
 
-const mapDispatchToProps = (dispatch: GenericDispatch): DispatchFromProps => ({
+const mapDispatchToProps = (dispatch: GenericDispatch): IDispatchFromProps => ({
 
 });
 
-export default connect<StateFromProps, DispatchFromProps>(
+export default connect<IStateFromProps, IDispatchFromProps>(
     mapStateToProps,
     mapDispatchToProps
 )(GameIndexView);

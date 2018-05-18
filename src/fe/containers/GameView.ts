@@ -5,18 +5,20 @@ import {GameResult, Grid, PlayerCoinSlot} from "../../types";
 import {
     getAllowedColumns,
     getTransposedGridSelector,
-    isGameInProgressSelector, nextPlayerNameSelector,
-    nextPlayerSelector
+    isGameInProgressSelector,
+    nextPlayerNameSelector,
+    nextPlayerSelector,
+    winnerNameSelector
 } from "../selectors/game";
 import {
     addMoveThunk,
     fetchGameThunk,
 } from "../thunks/game";
-import {GenericDispatch, State} from "../types";
+import {GenericDispatch, IState} from "../types";
 import {getSelectedGameResult} from "../selectors/game";
 import {resetGame} from "../actions/game";
 
-interface StateFromProps {
+interface IStateFromProps {
     grid: Grid,
     gameResult: GameResult,
     nextPlayer: PlayerCoinSlot,
@@ -24,7 +26,8 @@ interface StateFromProps {
     allowedColumns: number[],
     player1Name: string,
     player2Name: string,
-    nextPlayerName: string
+    nextPlayerName: string,
+    winnerName: string
 }
 
 export interface IAddMove {
@@ -35,13 +38,13 @@ export interface IFetchGame {
     (gameId: string): Promise<void>;
 }
 
-interface DispatchFromProps {
+interface IDispatchFromProps {
     addMove: IAddMove,
     fetchGame: IFetchGame,
     resetGame: Function,
 }
 
-const mapStateToProps = (state: State): StateFromProps => ({
+const mapStateToProps = (state: IState): IStateFromProps => ({
     grid: getTransposedGridSelector(state),
     gameResult: getSelectedGameResult(state),
     isGameInProgress: isGameInProgressSelector(state),
@@ -50,9 +53,10 @@ const mapStateToProps = (state: State): StateFromProps => ({
     allowedColumns: getAllowedColumns(state),
     player1Name: state.game.selectedGame.data.player1,
     player2Name: state.game.selectedGame.data.player2,
+    winnerName: winnerNameSelector(state)
 });
 
-const mapDispatchToProps = (dispatch: GenericDispatch): DispatchFromProps => ({
+const mapDispatchToProps = (dispatch: GenericDispatch): IDispatchFromProps => ({
     addMove(playerCoinSlot: PlayerCoinSlot, columnIndex: number) {
         dispatch(addMoveThunk(playerCoinSlot, columnIndex));
     },
@@ -64,7 +68,7 @@ const mapDispatchToProps = (dispatch: GenericDispatch): DispatchFromProps => ({
     }
 });
 
-export default connect<StateFromProps, DispatchFromProps>(
+export default connect<IStateFromProps, IDispatchFromProps>(
     mapStateToProps,
     mapDispatchToProps
 )(GameView);

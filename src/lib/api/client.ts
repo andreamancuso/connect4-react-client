@@ -1,10 +1,10 @@
 import axios, {AxiosResponse, AxiosError} from 'axios';
-import {APIClientConf} from "../../types";
+import {IAPIClientConf} from "../../types";
 
 class APIClient {
-    private conf: APIClientConf;
+    private conf: IAPIClientConf;
 
-    constructor(conf: APIClientConf) {
+    constructor(conf: IAPIClientConf) {
         this.conf = conf;
     }
 

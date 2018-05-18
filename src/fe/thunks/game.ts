@@ -1,19 +1,18 @@
-import {GameEntity, GameResult, PlayerCoinSlot} from "../../types";
-import {State} from "../types";
+import {IGameEntity, GameResult, PlayerCoinSlot} from "../../types";
+import {IState} from "../types";
 import {
     addMove, createGame, createGameFailure, createGameSuccess,
     fetchGame, fetchGameFailure,
-    fetchGames, fetchGamesFailure, fetchGamesSuccess, fetchGameSuccess, resetMoves,
+    fetchGames, fetchGamesFailure, fetchGamesSuccess, fetchGameSuccess,
     setResult, updateGame, updateGameFailure, updateGameSuccess
 } from "../actions/game";
 import APIClient from "../../lib/api/client";
 import {getSelectedGameResult} from "../selectors/game";
-import {AxiosResponse} from "@nestjs/common/http/interfaces/axios.interfaces";
 import {Dispatch} from "redux";
 import {ThunkAction} from "redux-thunk";
 
-export const initialActionThunk = (): ThunkAction<Promise<void>, State, APIClient> =>
-    (dispatch: Dispatch<State>, getState: () => State, apiClient: APIClient): Promise<void> => {
+export const initialActionThunk = (): ThunkAction<Promise<void>, IState, APIClient> =>
+    (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
             try {
                 await dispatch(fetchGamesThunk());
@@ -24,12 +23,12 @@ export const initialActionThunk = (): ThunkAction<Promise<void>, State, APIClien
         })
     };
 
-export const fetchGamesThunk = (): ThunkAction<Promise<void>, State, APIClient> =>
-    (dispatch: Dispatch<State>, getState: () => State, apiClient: APIClient): Promise<void> => {
+export const fetchGamesThunk = (): ThunkAction<Promise<void>, IState, APIClient> =>
+    (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
             try {
                 dispatch(fetchGames());
-                const games: GameEntity[] = await apiClient.get<GameEntity[]>('games');
+                const games: IGameEntity[] = await apiClient.get<IGameEntity[]>('games');
                 dispatch(fetchGamesSuccess(games));
                 resolve();
             } catch (error) {
@@ -39,12 +38,12 @@ export const fetchGamesThunk = (): ThunkAction<Promise<void>, State, APIClient> 
         })
     };
 
-export const fetchGameThunk = (gameId: string): ThunkAction<Promise<void>, State, APIClient> =>
-    (dispatch: Dispatch<State>, getState: () => State, apiClient: APIClient): Promise<void> => {
+export const fetchGameThunk = (gameId: string): ThunkAction<Promise<void>, IState, APIClient> =>
+    (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
             try {
                 dispatch(fetchGame());
-                const game: GameEntity = await apiClient.get<GameEntity>(`games/${gameId}`);
+                const game: IGameEntity = await apiClient.get<IGameEntity>(`games/${gameId}`);
                 dispatch(fetchGameSuccess(game));
                 resolve();
             } catch (error) {
@@ -54,15 +53,15 @@ export const fetchGameThunk = (gameId: string): ThunkAction<Promise<void>, State
         })
     };
 
-export const createGameThunk = (): ThunkAction<Promise<string>, State, APIClient> =>
-    (dispatch: Dispatch<State>, getState: () => State, apiClient: APIClient): Promise<string> => {
+export const createGameThunk = (): ThunkAction<Promise<string>, IState, APIClient> =>
+    (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<string> => {
         return new Promise(async(resolve, reject) => {
             try {
-                const state: State = getState();
+                const state: IState = getState();
                 const {player1, player2} = state.game.selectedGame.data;
 
                 dispatch(createGame());
-                const game: GameEntity = await apiClient.post<GameEntity>(`games`, {
+                const game: IGameEntity = await apiClient.post<IGameEntity>(`games`, {
                     player1, player2
                 });
 
@@ -75,11 +74,11 @@ export const createGameThunk = (): ThunkAction<Promise<string>, State, APIClient
         })
     };
 
-export const updateGameThunk = (): ThunkAction<Promise<void>, State, APIClient> =>
-    (dispatch: Dispatch<State>, getState: () => State, apiClient: APIClient): Promise<void> => {
+export const updateGameThunk = (): ThunkAction<Promise<void>, IState, APIClient> =>
+    (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
             try {
-                const state: State = getState();
+                const state: IState = getState();
                 const {id: gameId, moves, result} = state.game.selectedGame.data;
 
                 dispatch(updateGame());
@@ -93,11 +92,11 @@ export const updateGameThunk = (): ThunkAction<Promise<void>, State, APIClient> 
         })
     };
 
-export const addMoveThunk = (playerCoinSlot: PlayerCoinSlot, columnIndex: number): ThunkAction<void, State, APIClient> =>
-    (dispatch: Dispatch<State>, getState: () => State, apiClient: APIClient): void => {
+export const addMoveThunk = (playerCoinSlot: PlayerCoinSlot, columnIndex: number): ThunkAction<void, IState, APIClient> =>
+    (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): void => {
         dispatch(addMove(playerCoinSlot, columnIndex));
 
-        const state: State = getState();
+        const state: IState = getState();
         const gameResult: GameResult = getSelectedGameResult(state);
 
         if (gameResult !== GameResult.InProgress) {

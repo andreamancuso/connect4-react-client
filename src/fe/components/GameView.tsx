@@ -19,7 +19,8 @@ export interface GameViewProps {
     history: History,
     match: match<IGameRouteParams>,
     player1Name: string,
-    player2Name: string
+    player2Name: string,
+    winnerName: string
 }
 
 class GameView extends React.Component<GameViewProps, {}> {
@@ -48,7 +49,8 @@ class GameView extends React.Component<GameViewProps, {}> {
     }
 
     render() {
-        const {grid, nextPlayer, gameResult, player1Name, player2Name, nextPlayerName} = this.props;
+        const {grid, nextPlayer, gameResult, player1Name,
+            player2Name, nextPlayerName, winnerName} = this.props;
 
         return (
             <div style={{position: 'relative' }}>
@@ -91,7 +93,7 @@ class GameView extends React.Component<GameViewProps, {}> {
                         {gameResult === GameResult.InProgress ?
                             <div>Next player: <Avatar className={`grid__coin--player-${nextPlayer}`} icon="user" /> {nextPlayerName}</div>
                             : <div>
-                                <Avatar className={`grid__coin--player-${gameResult}`} icon="user" /> Player {gameResult} wins!
+                                <Avatar className={`grid__coin--player-${gameResult}`} icon="user" /> {winnerName} wins!
                                 &nbsp;
                                 <Button onClick={this.handleFinishGameClick}>Back to main page</Button>
                             </div>

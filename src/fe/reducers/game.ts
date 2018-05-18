@@ -1,4 +1,4 @@
-import {Move} from "../../types";
+import {IMove} from "../../types";
 import {
     ADD_MOVE,
     CREATE_GAME,
@@ -18,10 +18,10 @@ import {
     UPDATE_GAME_FAILURE,
     UPDATE_GAME_SUCCESS
 } from "../actions/game";
-import {GameState} from "../types";
+import {IGameState} from "../types";
 import {getGameEntityModel} from "../../lib/models";
 
-export const getInitialState = (): GameState => ({
+export const getInitialState = (): IGameState => ({
     games: {
         isLoading: false,
         data: [],
@@ -34,7 +34,7 @@ export const getInitialState = (): GameState => ({
     }
 });
 
-export const gameReducer = (state = getInitialState(), action: GameAction): GameState => {
+export const gameReducer = (state = getInitialState(), action: GameAction): IGameState => {
     switch (action.type) {
         case RESET_GAME:
             return {
@@ -47,7 +47,7 @@ export const gameReducer = (state = getInitialState(), action: GameAction): Game
             };
 
         case ADD_MOVE: {
-            const newMoves: Move[] = [...state.selectedGame.data.moves];
+            const newMoves: IMove[] = [...state.selectedGame.data.moves];
             newMoves.push(action.payload);
 
             return {

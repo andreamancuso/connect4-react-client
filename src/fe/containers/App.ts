@@ -1,28 +1,28 @@
 import {connect} from "react-redux";
 
 import App from '../components/App';
-import {GenericDispatch, State} from "../types";
+import {GenericDispatch, IState} from "../types";
 import {initialActionThunk} from "../thunks/game";
 
-interface StateFromProps {
+interface IStateFromProps {
 
 }
 
-interface DispatchFromProps {
+interface IDispatchFromProps {
     initialAction: Function,
 }
 
-const mapStateToProps = (state: State): StateFromProps => ({
+const mapStateToProps = (state: IState): IStateFromProps => ({
 
 });
 
-const mapDispatchToProps = (dispatch: GenericDispatch): DispatchFromProps => ({
+const mapDispatchToProps = (dispatch: GenericDispatch): IDispatchFromProps => ({
     initialAction() {
         dispatch(initialActionThunk());
     }
 });
 
-export default connect<StateFromProps, DispatchFromProps>(
+export default connect<IStateFromProps, IDispatchFromProps>(
     mapStateToProps,
     mapDispatchToProps
 )(App);

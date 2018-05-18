@@ -1,6 +1,6 @@
-import {GameEntity, GameResult} from "../types";
+import {IGameEntity, GameResult} from "../types";
 
-export const getGameEntityModel = (): GameEntity => ({
+export const getGameEntityModel = (): IGameEntity => ({
     id: '',
     player1: '',
     player2: '',

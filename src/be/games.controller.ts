@@ -5,7 +5,7 @@ import {
     HttpException
 } from '@nestjs/common';
 import {GamesService} from "./games.service";
-import {Game, GameEntity} from "../types";
+import {IGameEntity} from "../types";
 import {CreateGameDto, UpdateGameDto} from "./types";
 
 @Controller('games')
@@ -13,12 +13,12 @@ export class GamesController {
     constructor(@Inject(GamesService) private readonly gamesService: GamesService) {}
 
     @Get()
-    findAll(): Promise<GameEntity[]> {
+    findAll(): Promise<IGameEntity[]> {
         return this.gamesService.findAll();
     }
 
     @Get(':id')
-    async findOne(@Param('id') id: string): Promise<GameEntity> {
+    async findOne(@Param('id') id: string): Promise<IGameEntity> {
         const result = await this.gamesService.findOne(id);
 
         if (!result) {
@@ -35,7 +35,7 @@ export class GamesController {
             throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);
         }
 
-        const game: GameEntity = await this.gamesService.create(createGameDto);
+        const game: IGameEntity = await this.gamesService.create(createGameDto);
 
         res
         .append('Location', `/games/${game.id}`)

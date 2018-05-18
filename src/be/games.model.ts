@@ -1,8 +1,8 @@
 import * as firebase from "firebase";
-import {FirestoreGame} from "./types";
+import {IFirestoreGame} from "./types";
 import {GameResult} from "../types";
 
-export const getGameFirestoreModel = (): FirestoreGame => ({
+export const getGameFirestoreModel = (): IFirestoreGame => ({
     player1: '',
     player2: '',
     moves: [],
@@ -10,7 +10,7 @@ export const getGameFirestoreModel = (): FirestoreGame => ({
     result: GameResult.InProgress,
 });
 
-export const convertGameFirestoreModelIntoGameModel = (firestoreGameModel: FirestoreGame) => ({
+export const convertGameFirestoreModelIntoGameModel = (firestoreGameModel: IFirestoreGame) => ({
     ...firestoreGameModel,
     date: firestoreGameModel.date.toDate()
 });

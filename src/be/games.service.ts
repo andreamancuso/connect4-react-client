@@ -1,7 +1,7 @@
-import { Injectable, Inject } from '@nestjs/common';
-import {Game, GameEntity} from "../types";
+import {Injectable, Inject} from '@nestjs/common';
+import {IGameEntity} from "../types";
 import * as firebase from "firebase";
-import {CreateGameDto, FirestoreGame, UpdateGameDto} from "./types";
+import {CreateGameDto, IFirestoreGame, UpdateGameDto} from "./types";
 import {convertGameFirestoreModelIntoGameModel, getGameFirestoreModel} from "./games.model";
 import {PROVIDER_FIRESTORE} from "./constants";
 
@@ -13,16 +13,16 @@ export class GamesService {
         this.gamesCollectionRef = firestore.collection('games');
     }
 
-    findAll(): Promise<GameEntity[]> {
+    findAll(): Promise<IGameEntity[]> {
         return new Promise((resolve, reject) => {
             this.gamesCollectionRef
                 .get()
                 .then((gamesSnapshot: firebase.firestore.QuerySnapshot) => {
                     resolve(gamesSnapshot.docs
-                        .map((gameSnapshot: firebase.firestore.QueryDocumentSnapshot): GameEntity => {
+                        .map((gameSnapshot: firebase.firestore.QueryDocumentSnapshot): IGameEntity => {
                             const {id} = gameSnapshot;
                             const documentData: firebase.firestore.DocumentData = gameSnapshot.data();
-                            const game: FirestoreGame = documentData as FirestoreGame;
+                            const game: IFirestoreGame = documentData as IFirestoreGame;
 
                             return {
                                 id,
@@ -35,18 +35,18 @@ export class GamesService {
         });
     }
 
-    findOne(id: string): Promise<GameEntity|null> {
+    findOne(id: string): Promise<IGameEntity|null> {
         return new Promise((resolve, reject) => {
             this.gamesCollectionRef
                 .doc(id)
                 .get()
                 .then((gameSnapshot: firebase.firestore.DocumentSnapshot) => {
-                    let result: GameEntity|null = null;
+                    let result: IGameEntity|null = null;
 
                     if (gameSnapshot.exists) {
                         const {id} = gameSnapshot;
                         const documentData: firebase.firestore.DocumentData = gameSnapshot.data() as firebase.firestore.DocumentData;
-                        const game: FirestoreGame = documentData as FirestoreGame;
+                        const game: IFirestoreGame = documentData as IFirestoreGame;
 
                         result = {
                             id,
@@ -60,11 +60,11 @@ export class GamesService {
         });
     }
 
-    create(createGameDto: CreateGameDto): Promise<GameEntity> {
+    create(createGameDto: CreateGameDto): Promise<IGameEntity> {
         return new Promise(async (resolve, reject) => {
             try {
                 const newGameRef = this.gamesCollectionRef.doc();
-                const newGameData: FirestoreGame = {
+                const newGameData: IFirestoreGame = {
                     ...getGameFirestoreModel(),
                     ...createGameDto
                 };

@@ -34,42 +34,47 @@ class IndexView extends React.Component<IndexViewProps, {}> {
         const newGameButtonEnabled = player1Name.length > 0 && player2Name.length > 0;
 
         return (
-            <Row gutter={16}>
-                <Col span={12}>
-                    <Card>
-                        <Form onSubmit={this.newGameFormOnSubmit}>
-                            <Form.Item>
-                                <Input
-                                    prefix={<Icon type="user" />}
-                                    placeholder="Player 1: enter name"
-                                    value={player1Name}
-                                    onChange={this.onPlayerNameChanged(CoinSlot.Player1)}
-                                />
-                            </Form.Item>
-                            <Form.Item>
-                                <Input
-                                    prefix={<Icon type="user" />}
-                                    placeholder="Player 2: enter name"
-                                    value={player2Name}
-                                    onChange={this.onPlayerNameChanged(CoinSlot.Player2)}
-                                />
-                            </Form.Item>
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit" size="large" disabled={!newGameButtonEnabled}>
-                                    Begin new game
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    </Card>
-                </Col>
+            <React.Fragment>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Card>
+                            <Form onSubmit={this.newGameFormOnSubmit}>
+                                <Form.Item>
+                                    <Input
+                                        prefix={<Icon type="user" />}
+                                        placeholder="Player 1: enter name"
+                                        value={player1Name}
+                                        onChange={this.onPlayerNameChanged(CoinSlot.Player1)}
+                                    />
+                                </Form.Item>
+                                <Form.Item>
+                                    <Input
+                                        prefix={<Icon type="user" />}
+                                        placeholder="Player 2: enter name"
+                                        value={player2Name}
+                                        onChange={this.onPlayerNameChanged(CoinSlot.Player2)}
+                                    />
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit" size="large" disabled={!newGameButtonEnabled}>
+                                        Begin new game
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </Card>
+                    </Col>
 
-                <Col span={12}>
-                    <Card>
-                        <Button size={'large'} onClick={this.navigateToOnClick('/games')}>Resume a game</Button>
-                    </Card>
-                </Col>
+                    <Col span={12}>
+                        <Card>
+                            <Button size={'large'} onClick={this.navigateToOnClick('/games')}>Resume a game</Button>
+                        </Card>
+                    </Col>
 
-            </Row>
+                </Row>
+                <Row>
+
+                </Row>
+            </React.Fragment>
         );
     }
 }

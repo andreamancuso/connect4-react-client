@@ -2,9 +2,9 @@ import { IsString, IsNotEmpty } from 'class-validator';
 import * as firebase from "firebase";
 import Timestamp = firebase.firestore.Timestamp;
 
-import {GameResult, Move} from "../types";
+import {GameResult, IMove} from "../types";
 
-export interface FirebaseConfig {
+export interface IFirebaseConfig {
     readonly apiKey: string,
     readonly projectId: string,
     readonly authDomain: string
@@ -21,14 +21,14 @@ export class CreateGameDto {
 }
 
 export class UpdateGameDto {
-    readonly moves: Move[];
+    readonly moves: IMove[];
     readonly result: GameResult;
 }
 
-export interface FirestoreGame {
+export interface IFirestoreGame {
     player1: string,
     player2: string,
-    moves: Move[],
+    moves: IMove[],
     date: Timestamp,
     result: GameResult
 }

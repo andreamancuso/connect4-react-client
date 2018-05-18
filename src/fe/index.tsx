@@ -6,22 +6,22 @@ import {composeWithDevTools} from "redux-devtools-extension";
 import { Provider } from 'react-redux';
 import {combineReducers, createStore, applyMiddleware, Store, GenericStoreEnhancer, Reducer} from 'redux';
 import APIClient from "../lib/api/client";
-import {State} from "./types";
-import {APIClientConf} from "../types";
+import {IState} from "./types";
+import {IAPIClientConf} from "../types";
 
 import {reducers} from './reducers/root';
 
 const App = require('./containers/App').default;
-const apiConf: APIClientConf = require('./resources/api-client-conf.json');
+const apiConf: IAPIClientConf = require('./resources/api-client-conf.json');
 
 import 'antd/dist/antd.css';
 import './index.less';
 
 const apiClient = new APIClient(apiConf);
-const rootReducer: Reducer<State> = combineReducers<State>(reducers);
+const rootReducer: Reducer<IState> = combineReducers<IState>(reducers);
 const baseMiddlewares: GenericStoreEnhancer = applyMiddleware(thunk.withExtraArgument(apiClient));
 const middlewares: GenericStoreEnhancer = process.env.NODE_ENV === 'production' ? baseMiddlewares : composeWithDevTools(baseMiddlewares);
-const store: Store<State> = createStore<State>(
+const store: Store<IState> = createStore<IState>(
     rootReducer,
     middlewares
 );

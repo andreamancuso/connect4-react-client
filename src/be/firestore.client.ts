@@ -1,8 +1,8 @@
 import * as firebase from "firebase";
 
-import {FirebaseConfig} from "./types";
+import {IFirebaseConfig} from "./types";
 
-export function initFirestore(config: FirebaseConfig): Promise<firebase.firestore.Firestore> {
+export function initFirestore(config: IFirebaseConfig): Promise<firebase.firestore.Firestore> {
     return new Promise(async (resolve, reject) => {
         try {
             const fbApp: firebase.app.App = firebase.initializeApp(config);
