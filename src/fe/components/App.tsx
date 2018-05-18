@@ -4,11 +4,9 @@ import {Layout} from 'antd';
 import {
     BrowserRouter as Router,
     Route,
-    Link
 } from 'react-router-dom'
 
 import IndexView from "../containers/IndexView";
-import GameIndexView from "../containers/GameIndexView";
 import GameView from "../containers/GameView";
 
 import './App.css';
@@ -34,9 +32,8 @@ class App extends React.Component<AppProps, {}> {
                     <Content style={{ padding: '20px 50px' }}>
                         <Router>
                             <React.Fragment>
-                                <Route exact path="/" component={IndexView}/>
-                                <Route path="/games" component={GameIndexView}/>
-                                <Route path="/games/:id" component={GameView}/>
+                                <Route breadcrumbName="index" name="index" exact path="/" component={IndexView}/>
+                                <Route breadcrumbName="game" name="game" path="/games/:id" component={GameView}/>
                             </React.Fragment>
                         </Router>
                     </Content>

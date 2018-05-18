@@ -2,7 +2,7 @@ import {
     Get, Post, Put, Param, Body,
     Controller, Inject, HttpCode,
     Res, HttpStatus, ValidationPipe,
-    HttpException
+    Delete, HttpException
 } from '@nestjs/common';
 import {GamesService} from "./games.service";
 import {IGameEntity} from "../types";
@@ -47,5 +47,11 @@ export class GamesController {
     @Put(':id')
     async update(@Param('id') id, @Body() updateGameDto: UpdateGameDto) {
         return this.gamesService.update(id, updateGameDto);
+    }
+
+    @HttpCode(204)
+    @Delete(':id')
+    async delete(@Param('id') id) {
+        return this.gamesService.delete(id);
     }
 }

@@ -38,6 +38,16 @@ class APIClient {
         });
     }
 
+    delete(path: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const {endpoints: {base: baseEndpoint}, timeout} = this.conf;
+
+            axios.delete(`${baseEndpoint}${path}`, {timeout})
+            .then((response: AxiosResponse) => resolve())
+            .catch(this.handleError(reject));
+        });
+    }
+
     handleError(reject: Function) {
         return function (error: AxiosError) {
             if (error.response) {

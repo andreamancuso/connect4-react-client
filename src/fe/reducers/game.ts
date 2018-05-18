@@ -3,7 +3,7 @@ import {
     ADD_MOVE,
     CREATE_GAME,
     CREATE_GAME_FAILURE,
-    CREATE_GAME_SUCCESS,
+    CREATE_GAME_SUCCESS, DELETE_GAME, DELETE_GAME_FAILURE, DELETE_GAME_SUCCESS,
     FETCH_GAME,
     FETCH_GAME_FAILURE,
     FETCH_GAME_SUCCESS,
@@ -180,6 +180,35 @@ export const gameReducer = (state = getInitialState(), action: GameAction): IGam
             };
 
         case UPDATE_GAME_FAILURE:
+            return {
+                ...state,
+                selectedGame: {
+                    ...state.selectedGame,
+                    isLoading: false,
+                    error: action.payload
+                }
+            };
+
+        case DELETE_GAME:
+            return {
+                ...state,
+                selectedGame: {
+                    ...state.selectedGame,
+                    isLoading: true,
+                    error: ''
+                }
+            };
+
+        case DELETE_GAME_SUCCESS:
+            return {
+                ...state,
+                selectedGame: {
+                    ...state.selectedGame,
+                    isLoading: false
+                }
+            };
+
+        case DELETE_GAME_FAILURE:
             return {
                 ...state,
                 selectedGame: {

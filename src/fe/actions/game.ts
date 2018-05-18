@@ -43,6 +43,15 @@ export type UPDATE_GAME_SUCCESS = typeof UPDATE_GAME_SUCCESS;
 export const UPDATE_GAME_FAILURE = 'UPDATE_GAME_FAILURE';
 export type UPDATE_GAME_FAILURE = typeof UPDATE_GAME_FAILURE;
 
+export const DELETE_GAME = 'DELETE_GAME';
+export type DELETE_GAME = typeof DELETE_GAME;
+
+export const DELETE_GAME_SUCCESS = 'DELETE_GAME_SUCCESS';
+export type DELETE_GAME_SUCCESS = typeof DELETE_GAME_SUCCESS;
+
+export const DELETE_GAME_FAILURE = 'DELETE_GAME_FAILURE';
+export type DELETE_GAME_FAILURE = typeof DELETE_GAME_FAILURE;
+
 export const RESET_MOVES = 'RESET_MOVES';
 export type RESET_MOVES = typeof RESET_MOVES;
 
@@ -132,9 +141,23 @@ export interface IUpdateGameFailure {
     payload: Error
 }
 
+export interface IDeleteGame {
+    type: DELETE_GAME;
+}
+
+export interface IDeleteGameSuccess {
+    type: DELETE_GAME_SUCCESS;
+}
+
+export interface IDeleteGameFailure {
+    type: DELETE_GAME_FAILURE;
+    payload: Error
+}
+
 export type GameAction = ISetPlayerName | IAddMove | IResetMoves | IResetGame | ISetResult |
     IFetchGame | IFetchGameSuccess | IFetchGameFailure | IFetchGames | IFetchGamesSuccess | IFetchGamesFailure |
-    ICreateGame | ICreateGameSuccess | ICreateGameFailure | IUpdateGame | IUpdateGameSuccess | IUpdateGameFailure;
+    ICreateGame | ICreateGameSuccess | ICreateGameFailure | IUpdateGame | IUpdateGameSuccess | IUpdateGameFailure |
+    IDeleteGame | IDeleteGameSuccess | IDeleteGameFailure;
 
 export function addMove(playerCoinSlot: PlayerCoinSlot, columnIndex: number): IAddMove {
     return {
@@ -241,6 +264,25 @@ export function updateGameSuccess(): IUpdateGameSuccess {
 export function updateGameFailure(error: string): IUpdateGameFailure {
     return {
         type: UPDATE_GAME_FAILURE,
+        payload: error
+    };
+}
+
+export function deleteGame(): IDeleteGame {
+    return {
+        type: DELETE_GAME
+    };
+}
+
+export function deleteGameSuccess(): IDeleteGameSuccess {
+    return {
+        type: DELETE_GAME_SUCCESS,
+    };
+}
+
+export function deleteGameFailure(error: string): IDeleteGameFailure {
+    return {
+        type: DELETE_GAME_FAILURE,
         payload: error
     };
 }

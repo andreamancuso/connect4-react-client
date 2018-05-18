@@ -94,4 +94,10 @@ export class GamesService {
             .doc(id)
             .update(dataToUpdate);
     }
+
+    delete(id: string) {
+        return this.gamesCollectionRef
+            .doc(id)
+            .delete();
+    }
 }

@@ -1,7 +1,7 @@
 import {IGameEntity, GameResult, PlayerCoinSlot} from "../../types";
 import {IState} from "../types";
 import {
-    addMove, createGame, createGameFailure, createGameSuccess,
+    addMove, createGame, createGameFailure, createGameSuccess, deleteGame, deleteGameFailure, deleteGameSuccess,
     fetchGame, fetchGameFailure,
     fetchGames, fetchGamesFailure, fetchGamesSuccess, fetchGameSuccess,
     setResult, updateGame, updateGameFailure, updateGameSuccess
@@ -87,6 +87,34 @@ export const updateGameThunk = (): ThunkAction<Promise<void>, IState, APIClient>
                 resolve();
             } catch (error) {
                 dispatch(updateGameFailure(String(error)));
+                reject(error);
+            }
+        })
+    };
+
+export const deleteGameThunk = (gameId: string): ThunkAction<Promise<void>, IState, APIClient> =>
+    (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
+        return new Promise(async(resolve, reject) => {
+            try {
+                dispatch(deleteGame());
+                await apiClient.delete(`games/${gameId}`);
+                dispatch(deleteGameSuccess());
+                resolve();
+            } catch (error) {
+                dispatch(deleteGameFailure(String(error)));
+                reject(error);
+            }
+        })
+    };
+
+export const deleteGameAndRefreshGameListThunk = (gameId: string): ThunkAction<Promise<void>, IState, APIClient> =>
+    (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
+        return new Promise(async(resolve, reject) => {
+            try {
+                await dispatch(deleteGameThunk(gameId));
+                await dispatch(fetchGamesThunk());
+                resolve();
+            } catch (error) {
                 reject(error);
             }
         })

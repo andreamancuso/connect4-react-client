@@ -1,9 +1,10 @@
 import * as React from "react";
-import {Col, Avatar, Row, Button} from 'antd';
+import {Col, Avatar, Row, Button, Breadcrumb} from 'antd';
 import {GameResult, Grid, PlayerCoinSlot} from "../../types";
 import {IAddMove, IFetchGame} from "../containers/GameView";
 import {History} from "history";
 import {match} from "react-router";
+import {Link} from "react-router-dom";
 import {IGameRouteParams} from "../types";
 
 export interface GameViewProps {
@@ -20,7 +21,9 @@ export interface GameViewProps {
     match: match<IGameRouteParams>,
     player1Name: string,
     player2Name: string,
-    winnerName: string
+    winnerName: string,
+    routes: any,
+    params: any
 }
 
 class GameView extends React.Component<GameViewProps, {}> {
@@ -54,8 +57,13 @@ class GameView extends React.Component<GameViewProps, {}> {
 
         return (
             <div style={{position: 'relative' }}>
-                <Row gutter={16}>
-                    <Col span={12}>
+                <Breadcrumb>
+                    <Breadcrumb.Item><Link to="/">Home</Link></Breadcrumb.Item>
+                    <Breadcrumb.Item>Game</Breadcrumb.Item>
+                </Breadcrumb>
+
+                <Row gutter={16} style={{marginTop: 20}}>
+                    <Col span={18}>
                         <div className="grid" style={{marginBottom: 30}}>
                         {
                             grid.map((column, columnIndex) => (
@@ -78,10 +86,7 @@ class GameView extends React.Component<GameViewProps, {}> {
                         </div>
 
                         <Row gutter={16} type="flex" justify="center">
-                            <Col span={4}>
-                                <h3>Score</h3>
-                            </Col>
-                            <Col span={6}>
+                            <Col span={6} offset={4}>
                                 <Avatar className={`grid__coin--player-1`} icon="user" /> {player1Name}
                             </Col>
                             <Col span={6}>
@@ -89,14 +94,15 @@ class GameView extends React.Component<GameViewProps, {}> {
                             </Col>
                         </Row>
                     </Col>
-                    <Col span={12}>
+                    <Col span={6}>
                         {gameResult === GameResult.InProgress ?
                             <div>Next player: <Avatar className={`grid__coin--player-${nextPlayer}`} icon="user" /> {nextPlayerName}</div>
-                            : <div>
-                                <Avatar className={`grid__coin--player-${gameResult}`} icon="user" /> {winnerName} wins!
-                                &nbsp;
+                            : <React.Fragment>
+                                <div style={{marginBottom: 10}}>
+                                    <Avatar className={`grid__coin--player-${gameResult}`} icon="user" /> {winnerName} wins!
+                                </div>
                                 <Button onClick={this.handleFinishGameClick}>Back to main page</Button>
-                            </div>
+                            </React.Fragment>
                         }
 
                     </Col>
