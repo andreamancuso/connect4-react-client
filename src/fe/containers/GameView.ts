@@ -5,7 +5,6 @@ import {GameResult, Grid, PlayerCoinSlot} from "../../types";
 import {
     getAllowedColumns,
     getTransposedGridSelector,
-    isGameInProgressSelector,
     nextPlayerNameSelector,
     nextPlayerSelector,
     winnerNameSelector
