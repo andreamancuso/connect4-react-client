@@ -1,4 +1,4 @@
-import {CoinSlot, Column, Grid, PlayerCoinSlot} from "../types";
+import {CoinSlot, Column, GameResult, Grid, PlayerCoinSlot} from "../types";
 
 export const getColunmSlotAvailableIndex = (column) => {
     for (let i = column.length-1; i >= 0; i--) {
@@ -96,10 +96,10 @@ export const addCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerCoin
  * Quite possibly not the most efficient algorithm for this purpose
  *
  * @param {Grid} grid
- * @returns {CoinSlot}
+ * @returns {GameResult}
  */
-export const getGridStatus = (grid: Grid): CoinSlot => {
-    let currentSlot;
+export const getGridStatus = (grid: Grid): GameResult => {
+    let currentSlot: CoinSlot;
     for (let i = 0, numCols = grid.length; i < numCols; i++) {
         for (let j = 0, numSlots = grid[i].length; j < numSlots; j++) {
             currentSlot = grid[i][j];
@@ -108,17 +108,23 @@ export const getGridStatus = (grid: Grid): CoinSlot => {
                 continue;
             }
 
+            let matched = false;
+
             if (isVerticalConnect(grid[i], j, currentSlot)) {
-                return currentSlot;
+                matched = true;
             } else if(isHorizontalConnect(grid, i, j, currentSlot)) {
-                return currentSlot;
+                matched = true;
             } else if(isDownRightDiagonalConnect(grid, i, j, currentSlot)) {
-                return currentSlot;
+                matched = true;
             } else if(isUpRightDiagonalConnect(grid, i, j, currentSlot)) {
-                return currentSlot;
+                matched = true;
+            }
+
+            if (matched) {
+                return currentSlot === CoinSlot.Player1 ? GameResult.Player1Won : GameResult.Player2Won;
             }
         }
     }
 
-    return CoinSlot.Blank;
+    return GameResult.InProgress; // todo: have to add support for draw
 };

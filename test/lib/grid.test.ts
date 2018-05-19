@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {getColunmSlotAvailableIndex, getGrid, getGridStatus, getTransposedGrid} from '../../src/lib/grid';
-import {CoinSlot} from "../../src/types";
+import {CoinSlot, GameResult} from "../../src/types";
 
 describe('Grid lib stuff', () => {
     describe('getGrid', () => {
@@ -36,12 +36,12 @@ describe('Grid lib stuff', () => {
     });
 
     describe('getGridStatus', () => {
-        describe('when no connection is detected', () => {
+        describe('when no 4 matching adjacent tokens are detected', () => {
             it('should return CoinSlot.Blank', () => {
                 const grid = getGrid();
                 const result = getGridStatus(grid);
 
-                expect(result).equal(CoinSlot.Blank);
+                expect(result).equal(GameResult.InProgress);
             });
         });
 

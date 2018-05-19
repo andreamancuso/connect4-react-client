@@ -22,7 +22,6 @@ interface IStateFromProps {
     grid: Grid,
     gameResult: GameResult,
     nextPlayer: PlayerCoinSlot,
-    isGameInProgress: boolean,
     allowedColumns: number[],
     player1Name: string,
     player2Name: string,
@@ -47,7 +46,6 @@ interface IDispatchFromProps {
 const mapStateToProps = (state: IState): IStateFromProps => ({
     grid: getTransposedGridSelector(state),
     gameResult: getSelectedGameResult(state),
-    isGameInProgress: isGameInProgressSelector(state),
     nextPlayer: nextPlayerSelector(state),
     nextPlayerName: nextPlayerNameSelector(state),
     allowedColumns: getAllowedColumns(state),

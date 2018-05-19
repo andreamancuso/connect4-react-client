@@ -6,11 +6,11 @@ import {History} from "history";
 import {match} from "react-router";
 import {Link} from "react-router-dom";
 import {IGameRouteParams} from "../types";
+import GameGrid from "./GameGrid";
 
 export interface GameViewProps {
     grid: Grid,
     gameResult: GameResult,
-    isGameInProgress: boolean,
     nextPlayer: PlayerCoinSlot,
     nextPlayerName: string,
     addMove: IAddMove,
@@ -28,7 +28,7 @@ export interface GameViewProps {
 
 class GameView extends React.Component<GameViewProps, {}> {
     handleColClick = (columnIndex: number) => {
-        if (!this.props.isGameInProgress) {
+        if (this.props.gameResult !== GameResult.InProgress) {
             console.log('game over');
         } else if (this.props.allowedColumns.indexOf(columnIndex) === -1) {
             console.log('column is full');
@@ -64,26 +64,7 @@ class GameView extends React.Component<GameViewProps, {}> {
 
                 <Row gutter={16} style={{marginTop: 20}}>
                     <Col span={18}>
-                        <div className="grid" style={{marginBottom: 30}}>
-                        {
-                            grid.map((column, columnIndex) => (
-                                <Row key={columnIndex} type="flex" justify="center">
-                                    {
-                                        column.map((slot, slotIndex) => (
-                                        <Col
-                                            key={slotIndex}
-                                            span={3}
-                                            onClick={() => this.handleColClick(slotIndex)}
-                                            className="grid__cell"
-                                        >
-                                            <Avatar className={`grid__coin--player-${slot}`} size="large"/>
-                                        </Col>
-                                        ))
-                                    }
-                                </Row>
-                            ))
-                        }
-                        </div>
+                        <GameGrid grid={grid} colClick={this.handleColClick}/>
 
                         <Row gutter={16} type="flex" justify="center">
                             <Col span={6} offset={4}>

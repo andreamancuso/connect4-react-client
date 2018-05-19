@@ -1,9 +1,7 @@
 import {expect} from 'chai';
-import {gameReducer, getInitialState} from "../../src/reducers/game";
-import {
-    recordPlayerWin
-} from "../../src/actions/game";
-import {CoinSlot} from "../../src/types";
+import {gameReducer, getInitialState} from "../../../src/fe/reducers/game";
+import {addMove, SET_PLAYER_NAME, SET_RESULT, setPlayerName, setResult} from "../../../src/fe/actions/game";
+import {CoinSlot, GameResult} from "../../../src/types";
 
 describe('Game reducer', () => {
     let initialState;
@@ -12,14 +10,25 @@ describe('Game reducer', () => {
         initialState = getInitialState();
     });
 
-    it('should handle RECORD_PLAYER_WIN actions', () => {
-        let state = gameReducer(initialState, recordPlayerWin(CoinSlot.Player1));
-        state = gameReducer(state, recordPlayerWin(CoinSlot.Player1));
-        const result = gameReducer(state, recordPlayerWin(CoinSlot.Player2));
+    it('should handle ADD_MOVE actions', () => {
+        const result = gameReducer(initialState, addMove(CoinSlot.Player1, 0));
 
-        expect(result.games.length).equal(3);
-        expect(result.games[0]).equal(CoinSlot.Player1);
-        expect(result.games[1]).equal(CoinSlot.Player1);
-        expect(result.games[2]).equal(CoinSlot.Player2);
+        expect(result.selectedGame.data.moves.length).to.equal(1);
+        expect(result.selectedGame.data.moves[0].player).to.equal(CoinSlot.Player1);
+        expect(result.selectedGame.data.moves[0].columnIndex).to.equal(0);
+    });
+
+    it('should handle SET_RESULT actions', () => {
+        const result = gameReducer(initialState, setResult(GameResult.Player2Won));
+
+        expect(result.selectedGame.data.result).to.equal(GameResult.Player2Won);
+    });
+
+    it('should handle SET_PLAYER_NAME actions', () => {
+        let state = gameReducer(initialState, setPlayerName(CoinSlot.Player1, 'Andy'));
+        const result = gameReducer(state, setPlayerName(CoinSlot.Player2, 'Josh'));
+
+        expect(result.selectedGame.data.player1).to.equal('Andy');
+        expect(result.selectedGame.data.player2).to.equal('Josh');
     });
 });

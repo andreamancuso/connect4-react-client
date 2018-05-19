@@ -1,10 +1,23 @@
 import {IGameEntity, GameResult, PlayerCoinSlot} from "../../types";
 import {IState} from "../types";
 import {
-    addMove, createGame, createGameFailure, createGameSuccess, deleteGame, deleteGameFailure, deleteGameSuccess,
-    fetchGame, fetchGameFailure,
-    fetchGames, fetchGamesFailure, fetchGamesSuccess, fetchGameSuccess,
-    setResult, updateGame, updateGameFailure, updateGameSuccess
+    addMove,
+    createGame,
+    createGameFailure,
+    createGameSuccess,
+    deleteGame,
+    deleteGameFailure,
+    deleteGameSuccess,
+    fetchGame,
+    fetchGameFailure,
+    fetchGames,
+    fetchGamesFailure,
+    fetchGamesSuccess,
+    fetchGameSuccess,
+    setResult,
+    updateGame,
+    updateGameFailure,
+    updateGameSuccess
 } from "../actions/game";
 import APIClient from "../../lib/api/client";
 import {getSelectedGameResult} from "../selectors/game";
