@@ -1,6 +1,6 @@
 {
   "timeout": 5000,
   "endpoints": {
-    "base": "http://localhost:3000/"
+    "base": "/"
   }
 }

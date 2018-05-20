@@ -17,7 +17,10 @@ const apiConf: IAPIClientConf = require('./resources/api-client-conf.json');
 import 'antd/dist/antd.css';
 import './index.less';
 
-const apiClient = new APIClient(apiConf);
+console.log(process.env.ENDPOINTS_BASE_URL);
+
+const endpointsBaseUrl = typeof process.env.ENDPOINTS_BASE_URL === 'string' ? process.env.ENDPOINTS_BASE_URL : '';
+const apiClient = new APIClient(endpointsBaseUrl, apiConf);
 const rootReducer: Reducer<IState> = combineReducers<IState>(reducers);
 const baseMiddlewares: GenericStoreEnhancer = applyMiddleware(thunk.withExtraArgument(apiClient));
 const middlewares: GenericStoreEnhancer = process.env.NODE_ENV === 'production' ? baseMiddlewares : composeWithDevTools(baseMiddlewares);

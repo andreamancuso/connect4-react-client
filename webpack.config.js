@@ -134,6 +134,13 @@ export default {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
         }),
 
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+                ENDPOINTS_BASE_URL: JSON.stringify(process.env.ENDPOINTS_BASE_URL),
+            }
+        }),
+
         new webpack.LoaderOptionsPlugin({
             debug: true
         })

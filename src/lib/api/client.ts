@@ -2,17 +2,19 @@ import axios, {AxiosResponse, AxiosError} from 'axios';
 import {IAPIClientConf} from "../../types";
 
 class APIClient {
+    private endpointsBaseUrl: string;
     private conf: IAPIClientConf;
 
-    constructor(conf: IAPIClientConf) {
+    constructor(endpointsBaseUrl: string, conf: IAPIClientConf) {
+        this.endpointsBaseUrl = `${endpointsBaseUrl}${conf.endpoints.base}`;
         this.conf = conf;
     }
 
     get<T>(path: string): Promise<T> {
         return new Promise((resolve, reject) => {
-            const {endpoints: {base: baseEndpoint}, timeout} = this.conf;
+            const {timeout} = this.conf;
 
-            axios.get<T>(`${baseEndpoint}${path}`, {timeout})
+            axios.get<T>(`${this.endpointsBaseUrl}${path}`, {timeout})
             .then((response: AxiosResponse<T>) => resolve(response.data))
             .catch(this.handleError(reject));
         });
@@ -20,9 +22,9 @@ class APIClient {
 
     post<T>(path: string, body?: any): Promise<T> {
         return new Promise((resolve, reject) => {
-            const {endpoints: {base: baseEndpoint}, timeout} = this.conf;
+            const {timeout} = this.conf;
 
-            axios.post(`${baseEndpoint}${path}`, body, {timeout})
+            axios.post(`${this.endpointsBaseUrl}${path}`, body, {timeout})
             .then((response: AxiosResponse<T>) => resolve(response.data))
             .catch(this.handleError(reject));
         });
@@ -30,9 +32,9 @@ class APIClient {
 
     put(path: string, body?: any): Promise<void> {
         return new Promise((resolve, reject) => {
-            const {endpoints: {base: baseEndpoint}, timeout} = this.conf;
+            const {timeout} = this.conf;
 
-            axios.put(`${baseEndpoint}${path}`, body, {timeout})
+            axios.put(`${this.endpointsBaseUrl}${path}`, body, {timeout})
             .then((response: AxiosResponse) => resolve())
             .catch(this.handleError(reject));
         });
@@ -40,9 +42,9 @@ class APIClient {
 
     delete(path: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            const {endpoints: {base: baseEndpoint}, timeout} = this.conf;
+            const {timeout} = this.conf;
 
-            axios.delete(`${baseEndpoint}${path}`, {timeout})
+            axios.delete(`${this.endpointsBaseUrl}${path}`, {timeout})
             .then((response: AxiosResponse) => resolve())
             .catch(this.handleError(reject));
         });
