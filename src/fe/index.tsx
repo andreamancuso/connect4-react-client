@@ -17,8 +17,6 @@ const apiConf: IAPIClientConf = require('./resources/api-client-conf.json');
 import 'antd/dist/antd.css';
 import './index.less';
 
-console.log(process.env.ENDPOINTS_BASE_URL);
-
 const endpointsBaseUrl = typeof process.env.ENDPOINTS_BASE_URL === 'string' ? process.env.ENDPOINTS_BASE_URL : '';
 const apiClient = new APIClient(endpointsBaseUrl, apiConf);
 const rootReducer: Reducer<IState> = combineReducers<IState>(reducers);
