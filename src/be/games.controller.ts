@@ -1,7 +1,7 @@
 import {
     Get, Post, Put, Param, Body,
     Controller, Inject, HttpCode,
-    Res, HttpStatus, ValidationPipe,
+    Res, HttpStatus,
     Delete, HttpException
 } from '@nestjs/common';
 import {GamesService} from "./games.service";
@@ -29,7 +29,7 @@ export class GamesController {
     }
 
     @Post()
-    async create(@Body(new ValidationPipe({transform: true})) createGameDto: CreateGameDto, @Res() res) {
+    async create(@Body() createGameDto: CreateGameDto, @Res() res) {
         if (!createGameDto.player1 || !createGameDto.player1) {
             // todo: once metatype gets fixed, remove this as ValidationPipe should just work
             throw new HttpException('Invalid data', HttpStatus.BAD_REQUEST);

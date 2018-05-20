@@ -10,6 +10,9 @@ export const movesSelector = (state:IState): IMove[] => state.game.selectedGame.
 export const player1Selector = (state:IState): string => state.game.selectedGame.data.player1;
 export const player2Selector = (state:IState): string => state.game.selectedGame.data.player2;
 
+/**
+ * Returns the grid based on the current array of game moves.
+ */
 export const getGridSelector = createSelector(
     movesSelector,
     (moves: IMove[]):Grid => {
@@ -23,11 +26,17 @@ export const getGridSelector = createSelector(
     }
 );
 
+/**
+ * Returns the transposed grid so that it can be more easily rendered.
+ */
 export const getTransposedGridSelector = createSelector(
     getGridSelector,
     (grid: Grid):Grid => getTransposedGrid(grid)
 );
 
+/**
+ * Indicates which is the next player to make a move.
+ */
 export const nextPlayerSelector = createSelector(
     movesSelector,
     (moves: IMove[]):PlayerCoinSlot => {
@@ -39,6 +48,9 @@ export const nextPlayerSelector = createSelector(
     }
 );
 
+/**
+ * Returns the name of the next player to make a move.
+ */
 export const nextPlayerNameSelector = createSelector(
     [nextPlayerSelector, player1Selector, player2Selector],
     (player1or2: PlayerCoinSlot, player1: string, player2: string): string => {
@@ -46,6 +58,10 @@ export const nextPlayerNameSelector = createSelector(
     }
 );
 
+/**
+ * Returns the index of the columns into which a token can be inserted into, based
+ * on the current moves and grid.
+ */
 export const getAllowedColumns = createSelector(
     [getGridSelector, nextPlayerSelector],
     (grid: Grid, nextPlayer: PlayerCoinSlot):number[] => {
@@ -55,6 +71,10 @@ export const getAllowedColumns = createSelector(
     }
 );
 
+/**
+ * Returns the status of the current game. At the moment, there is no logic to determine
+ * the draw status.
+ */
 export const getSelectedGameResult = createSelector(
     getGridSelector,
     (grid: Grid): GameResult => {
@@ -62,6 +82,9 @@ export const getSelectedGameResult = createSelector(
     }
 );
 
+/**
+ * If the game has been won by either player, returns the name of the winner.
+ */
 export const winnerNameSelector = createSelector(
     [getSelectedGameResult, player1Selector, player2Selector],
     (result: GameResult, player1: string, player2: string): string => {

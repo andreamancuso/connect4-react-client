@@ -1,5 +1,12 @@
 import {CoinSlot, Column, GameResult, Grid, PlayerCoinSlot} from "../types";
 
+/**
+ * Given a column, returns the next available index which identifies
+ * the slot in which a token can be added.
+ *
+ * @param column
+ * @returns {number}
+ */
 export const getColunmSlotAvailableIndex = (column) => {
     for (let i = column.length-1; i >= 0; i--) {
         if (column[i] === CoinSlot.Blank) {
@@ -9,46 +16,12 @@ export const getColunmSlotAvailableIndex = (column) => {
     return -1;
 };
 
-const isVerticalConnect = (column: Column, startingColumnOffset: number, playerCoinSlot: CoinSlot): boolean => {
-    if (column[startingColumnOffset+3] === undefined) {
-        return false;
-    }
 
-    return playerCoinSlot === column[startingColumnOffset+1]
-    && playerCoinSlot === column[startingColumnOffset+2]
-    && playerCoinSlot === column[startingColumnOffset+3]
-};
-
-const isHorizontalConnect = (grid: Grid, startingRowOffset: number, columnOffset: number, playerCoinSlot: CoinSlot): boolean => {
-    if (grid[startingRowOffset+3] === undefined) {
-        return false;
-    }
-
-    return playerCoinSlot === grid[startingRowOffset+1][columnOffset]
-    && playerCoinSlot === grid[startingRowOffset+2][columnOffset]
-    && playerCoinSlot === grid[startingRowOffset+3][columnOffset]
-};
-
-const isDownRightDiagonalConnect = (grid: Grid, startingRowOffset: number, startingColumnOffset: number, playerCoinSlot: CoinSlot): boolean => {
-    if (grid[startingRowOffset+3] === undefined || grid[startingRowOffset+3][startingColumnOffset+3] === undefined) {
-        return false;
-    }
-
-    return playerCoinSlot === grid[startingRowOffset+1][startingColumnOffset+1]
-    && playerCoinSlot === grid[startingRowOffset+2][startingColumnOffset+2]
-    && playerCoinSlot === grid[startingRowOffset+3][startingColumnOffset+3]
-};
-
-const isUpRightDiagonalConnect = (grid: Grid, startingRowOffset: number, startingColumnOffset: number, playerCoinSlot: CoinSlot): boolean => {
-    if (grid[startingRowOffset+3] === undefined || grid[startingRowOffset+3][startingColumnOffset-3] === undefined) {
-        return false;
-    }
-
-    return playerCoinSlot === grid[startingRowOffset+1][startingColumnOffset-1]
-    && playerCoinSlot === grid[startingRowOffset+2][startingColumnOffset-2]
-    && playerCoinSlot === grid[startingRowOffset+3][startingColumnOffset-3]
-};
-
+/**
+ * Creates an empty grid, filled with zeroes, which indicate an empty slot
+ *
+ * @returns {Grid}
+ */
 export const getGrid = ():Grid => {
     return [
         [0, 0, 0, 0, 0, 0],
@@ -61,9 +34,24 @@ export const getGrid = ():Grid => {
     ];
 };
 
+/**
+ * Returns the grid, transposed, so that it can be (more) easily rendered.
+ *
+ * @param {Grid} grid
+ * @returns {Grid}
+ */
 export const getTransposedGrid = (grid:Grid):Grid =>
     grid[0].map((col, i) => grid.map(row => row[i]));
 
+/**
+ * Determines whether a token can be inserted into a column, first by verifying that a
+ * column is defined, then by checking whether or not is full.
+ *
+ * @param {Grid} grid
+ * @param {PlayerCoinSlot} playerCoinSlot
+ * @param {number} columnIndex
+ * @returns {boolean}
+ */
 export const canAddCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerCoinSlot, columnIndex: number): boolean => {
     if (grid[columnIndex] === undefined) {
         // Invalid column index
@@ -78,6 +66,15 @@ export const canAddCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerC
     return true;
 };
 
+/**
+ * Assuming a token can be inserted into the specified column, it generates a new instance
+ * of the grid, setting the new token accordingly.
+ *
+ * @param {Grid} grid
+ * @param {PlayerCoinSlot} playerCoinSlot
+ * @param {number} columnIndex
+ * @returns {Grid}
+ */
 export const addCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerCoinSlot, columnIndex: number): Grid => {
     if (!canAddCoinToColumnWithinGrid(grid, playerCoinSlot, columnIndex)) {
         return grid;
@@ -93,7 +90,11 @@ export const addCoinToColumnWithinGrid = (grid: Grid, playerCoinSlot: PlayerCoin
 };
 
 /**
- * Quite possibly not the most efficient algorithm for this purpose
+ * Iterates through the multi-dimensional grid array and determines
+ * whether 4 adjacent tokens have been matched horizontally, vertically
+ * or diagonally (up-right and down-right).
+ *
+ * Quite possibly not the most efficient algorithm for this purpose.
  *
  * @param {Grid} grid
  * @returns {GameResult}
@@ -127,4 +128,44 @@ export const getGridStatus = (grid: Grid): GameResult => {
     }
 
     return GameResult.InProgress; // todo: have to add support for draw
+};
+
+const isVerticalConnect = (column: Column, startingColumnOffset: number, playerCoinSlot: CoinSlot): boolean => {
+    if (column[startingColumnOffset+3] === undefined) {
+        return false;
+    }
+
+    return playerCoinSlot === column[startingColumnOffset+1]
+        && playerCoinSlot === column[startingColumnOffset+2]
+        && playerCoinSlot === column[startingColumnOffset+3]
+};
+
+const isHorizontalConnect = (grid: Grid, startingRowOffset: number, columnOffset: number, playerCoinSlot: CoinSlot): boolean => {
+    if (grid[startingRowOffset+3] === undefined) {
+        return false;
+    }
+
+    return playerCoinSlot === grid[startingRowOffset+1][columnOffset]
+        && playerCoinSlot === grid[startingRowOffset+2][columnOffset]
+        && playerCoinSlot === grid[startingRowOffset+3][columnOffset]
+};
+
+const isDownRightDiagonalConnect = (grid: Grid, startingRowOffset: number, startingColumnOffset: number, playerCoinSlot: CoinSlot): boolean => {
+    if (grid[startingRowOffset+3] === undefined || grid[startingRowOffset+3][startingColumnOffset+3] === undefined) {
+        return false;
+    }
+
+    return playerCoinSlot === grid[startingRowOffset+1][startingColumnOffset+1]
+        && playerCoinSlot === grid[startingRowOffset+2][startingColumnOffset+2]
+        && playerCoinSlot === grid[startingRowOffset+3][startingColumnOffset+3]
+};
+
+const isUpRightDiagonalConnect = (grid: Grid, startingRowOffset: number, startingColumnOffset: number, playerCoinSlot: CoinSlot): boolean => {
+    if (grid[startingRowOffset+3] === undefined || grid[startingRowOffset+3][startingColumnOffset-3] === undefined) {
+        return false;
+    }
+
+    return playerCoinSlot === grid[startingRowOffset+1][startingColumnOffset-1]
+        && playerCoinSlot === grid[startingRowOffset+2][startingColumnOffset-2]
+        && playerCoinSlot === grid[startingRowOffset+3][startingColumnOffset-3]
 };

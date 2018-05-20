@@ -24,6 +24,11 @@ import {getSelectedGameResult} from "../selectors/game";
 import {Dispatch} from "redux";
 import {ThunkAction} from "redux-thunk";
 
+/**
+ * Very first thunk triggered by first render of the application, triggers the fetch games thunk.
+ *
+ * @returns {ThunkAction<Promise<void>, IState, APIClient>}
+ */
 export const initialActionThunk = (): ThunkAction<Promise<void>, IState, APIClient> =>
     (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
@@ -36,6 +41,11 @@ export const initialActionThunk = (): ThunkAction<Promise<void>, IState, APIClie
         })
     };
 
+/**
+ * It fetches all games' data by triggering an HTTP request.
+ *
+ * @returns {ThunkAction<Promise<void>, IState, APIClient>}
+ */
 export const fetchGamesThunk = (): ThunkAction<Promise<void>, IState, APIClient> =>
     (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
@@ -51,6 +61,12 @@ export const fetchGamesThunk = (): ThunkAction<Promise<void>, IState, APIClient>
         })
     };
 
+/**
+ * It fetches game data based on the received game ID, by triggering an HTTP request.
+ *
+ * @param {string} gameId
+ * @returns {ThunkAction<Promise<void>, IState, APIClient>}
+ */
 export const fetchGameThunk = (gameId: string): ThunkAction<Promise<void>, IState, APIClient> =>
     (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
@@ -66,6 +82,12 @@ export const fetchGameThunk = (gameId: string): ThunkAction<Promise<void>, IStat
         })
     };
 
+/**
+ * Creates a game by triggering an HTTP request. The game ID, generated and returned by the server,
+ * is exposed through the Promise.
+ *
+ * @returns {ThunkAction<Promise<string>, IState, APIClient>}
+ */
 export const createGameThunk = (): ThunkAction<Promise<string>, IState, APIClient> =>
     (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<string> => {
         return new Promise(async(resolve, reject) => {
@@ -87,6 +109,11 @@ export const createGameThunk = (): ThunkAction<Promise<string>, IState, APIClien
         })
     };
 
+/**
+ * Updates a game by triggering an HTTP request.
+ *
+ * @returns {ThunkAction<Promise<void>, IState, APIClient>}
+ */
 export const updateGameThunk = (): ThunkAction<Promise<void>, IState, APIClient> =>
     (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
@@ -105,6 +132,12 @@ export const updateGameThunk = (): ThunkAction<Promise<void>, IState, APIClient>
         })
     };
 
+/**
+ * Deletes a game by triggering an HTTP request.
+ *
+ * @param {string} gameId
+ * @returns {ThunkAction<Promise<void>, IState, APIClient>}
+ */
 export const deleteGameThunk = (gameId: string): ThunkAction<Promise<void>, IState, APIClient> =>
     (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
@@ -120,6 +153,12 @@ export const deleteGameThunk = (gameId: string): ThunkAction<Promise<void>, ISta
         })
     };
 
+/**
+ * Triggers the delete game thunk, then triggers a refresh of the games list.
+ *
+ * @param {string} gameId
+ * @returns {ThunkAction<Promise<void>, IState, APIClient>}
+ */
 export const deleteGameAndRefreshGameListThunk = (gameId: string): ThunkAction<Promise<void>, IState, APIClient> =>
     (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): Promise<void> => {
         return new Promise(async(resolve, reject) => {
@@ -133,6 +172,14 @@ export const deleteGameAndRefreshGameListThunk = (gameId: string): ThunkAction<P
         })
     };
 
+/**
+ * Adds a move then queries the grid to establish whether the game is ended, in which case
+ * the result is updated. Finally, it triggers the update game thunk.
+ *
+ * @param {PlayerCoinSlot} playerCoinSlot
+ * @param {number} columnIndex
+ * @returns {ThunkAction<void, IState, APIClient>}
+ */
 export const addMoveThunk = (playerCoinSlot: PlayerCoinSlot, columnIndex: number): ThunkAction<void, IState, APIClient> =>
     (dispatch: Dispatch<IState>, getState: () => IState, apiClient: APIClient): void => {
         dispatch(addMove(playerCoinSlot, columnIndex));
