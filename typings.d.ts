@@ -1,6 +1,6 @@
-import {APIClientConf} from "./src/types";
+import {IAPIClientConf} from "./src/types";
 
 declare module "api-client-conf.json" {
-    const value: APIClientConf;
+    const value: IAPIClientConf;
     export default value;
 }

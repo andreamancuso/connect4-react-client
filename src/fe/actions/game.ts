@@ -1,5 +1,6 @@
-import {Error} from "../types";
-import {IGameEntity, GameResult, IMove, PlayerCoinSlot} from "../../types";
+import { Error } from '../types';
+import { IGameEntity, GameResult, IMove, PlayerCoinSlot } from '../../types';
+import { Action } from 'redux';
 
 export const ADD_MOVE = 'ADD_MOVE';
 export type ADD_MOVE = typeof ADD_MOVE;
@@ -61,228 +62,247 @@ export type RESET_GAME = typeof RESET_GAME;
 export const SET_PLAYER_NAME = 'SET_PLAYER_NAME';
 export type SET_PLAYER_NAME = typeof SET_PLAYER_NAME;
 
-export interface IAddMove {
-    type: ADD_MOVE;
-    payload: IMove;
+export interface IAddMove extends Action {
+  type: ADD_MOVE;
+  payload: IMove;
 }
 
-export interface ISetResult {
-    type: SET_RESULT;
-    payload: GameResult
+export interface ISetResult extends Action {
+  type: SET_RESULT;
+  payload: GameResult;
 }
 
-export interface ISetPlayerName {
-    type: SET_PLAYER_NAME;
-    payload: {
-        player1or2: PlayerCoinSlot,
-        name: string
-    }
+export interface ISetPlayerName extends Action {
+  type: SET_PLAYER_NAME;
+  payload: {
+    player1or2: PlayerCoinSlot;
+    name: string;
+  };
 }
 
-export interface IResetMoves {
-    type: RESET_MOVES;
+export interface IResetMoves extends Action {
+  type: RESET_MOVES;
 }
 
-export interface IResetGame {
-    type: RESET_GAME;
+export interface IResetGame extends Action {
+  type: RESET_GAME;
 }
 
-export interface IFetchGame {
-    type: FETCH_GAME;
+export interface IFetchGame extends Action {
+  type: FETCH_GAME;
 }
 
-export interface IFetchGameSuccess {
-    type: FETCH_GAME_SUCCESS;
-    payload: IGameEntity
+export interface IFetchGameSuccess extends Action {
+  type: FETCH_GAME_SUCCESS;
+  payload: IGameEntity;
 }
 
-export interface IFetchGameFailure {
-    type: FETCH_GAME_FAILURE;
-    payload: Error
+export interface IFetchGameFailure extends Action {
+  type: FETCH_GAME_FAILURE;
+  payload: Error;
 }
 
-export interface IFetchGames {
-    type: FETCH_GAMES;
+export interface IFetchGames extends Action {
+  type: FETCH_GAMES;
 }
 
-export interface IFetchGamesSuccess {
-    type: FETCH_GAMES_SUCCESS;
-    payload: IGameEntity[]
+export interface IFetchGamesSuccess extends Action {
+  type: FETCH_GAMES_SUCCESS;
+  payload: IGameEntity[];
 }
 
-export interface IFetchGamesFailure {
-    type: FETCH_GAMES_FAILURE;
-    payload: Error
+export interface IFetchGamesFailure extends Action {
+  type: FETCH_GAMES_FAILURE;
+  payload: Error;
 }
 
-export interface ICreateGame {
-    type: CREATE_GAME;
+export interface ICreateGame extends Action {
+  type: CREATE_GAME;
 }
 
-export interface ICreateGameSuccess {
-    type: CREATE_GAME_SUCCESS;
+export interface ICreateGameSuccess extends Action {
+  type: CREATE_GAME_SUCCESS;
 }
 
-export interface ICreateGameFailure {
-    type: CREATE_GAME_FAILURE;
-    payload: Error
+export interface ICreateGameFailure extends Action {
+  type: CREATE_GAME_FAILURE;
+  payload: Error;
 }
 
-export interface IUpdateGame {
-    type: UPDATE_GAME;
+export interface IUpdateGame extends Action {
+  type: UPDATE_GAME;
 }
 
-export interface IUpdateGameSuccess {
-    type: UPDATE_GAME_SUCCESS;
+export interface IUpdateGameSuccess extends Action {
+  type: UPDATE_GAME_SUCCESS;
 }
 
-export interface IUpdateGameFailure {
-    type: UPDATE_GAME_FAILURE;
-    payload: Error
+export interface IUpdateGameFailure extends Action {
+  type: UPDATE_GAME_FAILURE;
+  payload: Error;
 }
 
-export interface IDeleteGame {
-    type: DELETE_GAME;
+export interface IDeleteGame extends Action {
+  type: DELETE_GAME;
 }
 
-export interface IDeleteGameSuccess {
-    type: DELETE_GAME_SUCCESS;
+export interface IDeleteGameSuccess extends Action {
+  type: DELETE_GAME_SUCCESS;
 }
 
-export interface IDeleteGameFailure {
-    type: DELETE_GAME_FAILURE;
-    payload: Error
+export interface IDeleteGameFailure extends Action {
+  type: DELETE_GAME_FAILURE;
+  payload: Error;
 }
 
-export type GameAction = ISetPlayerName | IAddMove | IResetMoves | IResetGame | ISetResult |
-    IFetchGame | IFetchGameSuccess | IFetchGameFailure | IFetchGames | IFetchGamesSuccess | IFetchGamesFailure |
-    ICreateGame | ICreateGameSuccess | ICreateGameFailure | IUpdateGame | IUpdateGameSuccess | IUpdateGameFailure |
-    IDeleteGame | IDeleteGameSuccess | IDeleteGameFailure;
+export type GameAction =
+  | ISetPlayerName
+  | IAddMove
+  | IResetMoves
+  | IResetGame
+  | ISetResult
+  | IFetchGame
+  | IFetchGameSuccess
+  | IFetchGameFailure
+  | IFetchGames
+  | IFetchGamesSuccess
+  | IFetchGamesFailure
+  | ICreateGame
+  | ICreateGameSuccess
+  | ICreateGameFailure
+  | IUpdateGame
+  | IUpdateGameSuccess
+  | IUpdateGameFailure
+  | IDeleteGame
+  | IDeleteGameSuccess
+  | IDeleteGameFailure;
 
 export function addMove(playerCoinSlot: PlayerCoinSlot, columnIndex: number): IAddMove {
-    return {
-        type: ADD_MOVE, payload: {player: playerCoinSlot, columnIndex}
-    };
+  return {
+    type: ADD_MOVE,
+    payload: { player: playerCoinSlot, columnIndex }
+  };
 }
 
 export function setResult(result: GameResult): ISetResult {
-    return {
-        type: SET_RESULT, payload: result
-    };
+  return {
+    type: SET_RESULT,
+    payload: result
+  };
 }
 
 export function setPlayerName(player1or2: PlayerCoinSlot, name: string): ISetPlayerName {
-    return {
-        type: SET_PLAYER_NAME,
-        payload: {player1or2, name}
-    };
+  return {
+    type: SET_PLAYER_NAME,
+    payload: { player1or2, name }
+  };
 }
 
 export function resetMoves(): IResetMoves {
-    return {
-        type: RESET_MOVES
-    };
+  return {
+    type: RESET_MOVES
+  };
 }
 
 export function resetGame(): IResetGame {
-    return {
-        type: RESET_GAME
-    };
+  return {
+    type: RESET_GAME
+  };
 }
 
 export function fetchGame(): IFetchGame {
-    return {
-        type: FETCH_GAME
-    };
+  return {
+    type: FETCH_GAME
+  };
 }
 
 export function fetchGameSuccess(data: IGameEntity): IFetchGameSuccess {
-    return {
-        type: FETCH_GAME_SUCCESS,
-        payload: data
-    };
+  return {
+    type: FETCH_GAME_SUCCESS,
+    payload: data
+  };
 }
 
 export function fetchGameFailure(error: string): IFetchGameFailure {
-    return {
-        type: FETCH_GAME_FAILURE,
-        payload: error
-    };
+  return {
+    type: FETCH_GAME_FAILURE,
+    payload: error
+  };
 }
 
 export function fetchGames(): IFetchGames {
-    return {
-        type: FETCH_GAMES
-    };
+  return {
+    type: FETCH_GAMES
+  };
 }
 
 export function fetchGamesSuccess(data: IGameEntity[]): IFetchGamesSuccess {
-    return {
-        type: FETCH_GAMES_SUCCESS,
-        payload: data
-    };
+  return {
+    type: FETCH_GAMES_SUCCESS,
+    payload: data
+  };
 }
 
 export function fetchGamesFailure(error: string): IFetchGamesFailure {
-    return {
-        type: FETCH_GAMES_FAILURE,
-        payload: error
-    };
+  return {
+    type: FETCH_GAMES_FAILURE,
+    payload: error
+  };
 }
 
 export function createGame(): ICreateGame {
-    return {
-        type: CREATE_GAME
-    };
+  return {
+    type: CREATE_GAME
+  };
 }
 
 export function createGameSuccess(): ICreateGameSuccess {
-    return {
-        type: CREATE_GAME_SUCCESS
-    };
+  return {
+    type: CREATE_GAME_SUCCESS
+  };
 }
 
 export function createGameFailure(error: string): ICreateGameFailure {
-    return {
-        type: CREATE_GAME_FAILURE,
-        payload: error
-    };
+  return {
+    type: CREATE_GAME_FAILURE,
+    payload: error
+  };
 }
 
 export function updateGame(): IUpdateGame {
-    return {
-        type: UPDATE_GAME
-    };
+  return {
+    type: UPDATE_GAME
+  };
 }
 
 export function updateGameSuccess(): IUpdateGameSuccess {
-    return {
-        type: UPDATE_GAME_SUCCESS,
-    };
+  return {
+    type: UPDATE_GAME_SUCCESS
+  };
 }
 
 export function updateGameFailure(error: string): IUpdateGameFailure {
-    return {
-        type: UPDATE_GAME_FAILURE,
-        payload: error
-    };
+  return {
+    type: UPDATE_GAME_FAILURE,
+    payload: error
+  };
 }
 
 export function deleteGame(): IDeleteGame {
-    return {
-        type: DELETE_GAME
-    };
+  return {
+    type: DELETE_GAME
+  };
 }
 
 export function deleteGameSuccess(): IDeleteGameSuccess {
-    return {
-        type: DELETE_GAME_SUCCESS,
-    };
+  return {
+    type: DELETE_GAME_SUCCESS
+  };
 }
 
 export function deleteGameFailure(error: string): IDeleteGameFailure {
-    return {
-        type: DELETE_GAME_FAILURE,
-        payload: error
-    };
+  return {
+    type: DELETE_GAME_FAILURE,
+    payload: error
+  };
 }

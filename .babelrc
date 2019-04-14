@@ -1,11 +1,14 @@
 {
   "presets": [
-    ["env", {
-      "targets": { "node": 8 },
-      "useBuiltIns": true
-    }],
-    "stage-0",
-    "react"
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "esmodules": true
+        }
+      }
+    ],
+    "@babel/react"
   ],
   "plugins": [
     "add-module-exports",
@@ -13,14 +16,9 @@
     ["import", { "libraryName": "antd", "style": "css" }]
   ],
   "env": {
-    "production": {
-      "plugins": ["babel-plugin-dev-expression"]
-    },
+    "production": {},
     "development": {
-      "plugins": [
-        "transform-class-properties",
-        "transform-es2015-classes"
-      ]
+      "plugins": ["transform-class-properties", "transform-es2015-classes"]
     }
   }
 }
