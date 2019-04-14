@@ -10,11 +10,9 @@ import {
   winnerNameSelector
 } from '../selectors/game';
 import { addMoveThunk, fetchGameThunk } from '../thunks/game';
-import { GenericDispatch, IState, ContainerDispatchType } from '../types';
+import { IState, ContainerDispatchType } from '../types';
 import { getSelectedGameResult } from '../selectors/game';
 import { resetGame } from '../actions/game';
-import { Dispatch, Action } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
 
 interface IStateFromProps {
   grid: Grid;

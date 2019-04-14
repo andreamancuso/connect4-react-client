@@ -2,7 +2,7 @@ import { connect, MapStateToProps, MapDispatchToProps } from 'react-redux';
 
 import IndexView from '../components/IndexView';
 
-import { GenericDispatch, IState, ContainerDispatchType } from '../types';
+import { IState, ContainerDispatchType } from '../types';
 import {
   createGameThunk,
   deleteGameAndRefreshGameListThunk,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { JSDOM } from 'jsdom';
 import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 
@@ -11,25 +10,14 @@ const { shallow } = Enzyme;
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const globalAny: any = global;
-
 describe('<GameGrid/>', () => {
   let props;
 
   beforeEach(() => {
-    const dom = new JSDOM(`<!doctype html><html><body></body></html>`);
-    globalAny.window = dom.window;
-    globalAny.document = dom.window.document;
-
     props = {
       grid: getGrid(),
       colClick: () => {}
     };
-  });
-
-  afterEach(() => {
-    globalAny.window = undefined;
-    globalAny.document = undefined;
   });
 
   it('renders as expected', () => {

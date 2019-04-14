@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as sinon from 'sinon';
-import { JSDOM } from 'jsdom';
 import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 
@@ -13,16 +12,10 @@ const { shallow } = Enzyme;
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const globalAny: any = global;
-
 describe('<GameView/>', () => {
   let props;
 
   beforeEach(() => {
-    const dom = new JSDOM(`<!doctype html><html><body></body></html>`);
-    globalAny.window = dom.window;
-    globalAny.document = dom.window.document;
-
     props = {
       grid: getGrid(),
       gameResult: GameResult.InProgress,
@@ -35,11 +28,6 @@ describe('<GameView/>', () => {
       },
       fetchGame: sinon.spy()
     };
-  });
-
-  afterEach(() => {
-    globalAny.window = undefined;
-    globalAny.document = undefined;
   });
 
   it('renders as expected', () => {
