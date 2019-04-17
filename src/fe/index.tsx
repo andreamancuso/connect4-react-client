@@ -1,3 +1,5 @@
+declare var API_URL: string;
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
@@ -17,9 +19,7 @@ import 'antd/dist/antd.css';
 import './index.less';
 import { GameAction } from './actions/game';
 
-const endpointsBaseUrl =
-  typeof process.env.ENDPOINTS_BASE_URL === 'string' ? process.env.ENDPOINTS_BASE_URL : '';
-const apiClient = new APIClient(endpointsBaseUrl, apiConf);
+const apiClient = new APIClient(API_URL, apiConf);
 const rootReducer: Reducer<IState> = combineReducers<IState>(reducers);
 const baseMiddlewares = applyMiddleware(thunk.withExtraArgument({ apiClient }));
 const middlewares =
